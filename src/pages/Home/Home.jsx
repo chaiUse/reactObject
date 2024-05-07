@@ -1,6 +1,6 @@
 // import React from 'react'
-import style from './Home.module.scss'
-import { Outlet } from 'react-router-dom'
+import style from "./Home.module.scss";
+import { Outlet } from "react-router-dom";
 
 import List from "../../components/list";
 import { useEffect, useState } from "react";
@@ -24,6 +24,7 @@ const Home = () => {
   const getlist = async () => {
     const ls = await getUserInfoApi();
     const lt = await getListApi();
+    setUser(ls.data);
     const res = router(ls.data.permission, lt.data.list);
     setList(res);
   };
