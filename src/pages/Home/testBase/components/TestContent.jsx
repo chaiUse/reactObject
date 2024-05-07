@@ -1,8 +1,5 @@
 // import style from './testContent.module.scss'
-import {
-  EditableProTable,
-  ProFormRadio,
-} from '@ant-design/pro-components';
+import { EditableProTable, ProFormRadio } from '@ant-design/pro-components';
 import { useState } from 'react';
 
 const TestContent = () => {

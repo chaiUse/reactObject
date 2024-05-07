@@ -16,16 +16,12 @@ const routeConfige=[
     path:'/home',
     element: <Home />,
     children:[
-      {
-        path:'/home/room',
-        element:<Room />
-      }
-    ],
-    children:[
       { path:'testDetail', element:<TestDetail /> },
       { path:'testList', element:<TestList /> },
       { path:'overTest', element:<OverTest /> },
-      { path:'roleManagement', element:<RoleManagement /> }
+      { path:'roleManagement', element:<RoleManagement /> },
+      { path:'/home/room', element:<Room />},
+      { path: '/home/testBase', element: <TestBase />}
     ]
   }
 ]
