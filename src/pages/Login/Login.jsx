@@ -1,4 +1,4 @@
-// import { navigator } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import React, { useEffect, useState } from "react";
 import style from "./login.module.scss";
@@ -13,14 +13,14 @@ const Login = () => {
   //定义数据
   const [Capimg, setImg] = useState("");
 
-  // const history = useHistory();
+  const navigate = useNavigate();
 
   //登录
   const onFinish = (values) => {
     console.log("账号密码验证码", { ...values });
     getUPApi(values).then((res) => {
       localStorage.setItem("token", res.data.token);
-      // navigator("/home");
+      navigate("/home");
     });
   };
 
