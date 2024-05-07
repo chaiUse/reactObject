@@ -5,7 +5,7 @@ import style from "./login.module.scss";
 
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Col, Row } from "antd";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 
 import { getCapTchaApi, getUPApi } from "../../api/login";
 
@@ -16,12 +16,24 @@ const Login = () => {
   const navigate = useNavigate();
 
   //登录
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log("账号密码验证码", { ...values });
-    getUPApi(values).then((res) => {
+    const res = await getUPApi(values);
+    console.log(res);
+
+    if (res.code === 200) {
       localStorage.setItem("token", res.data.token);
+      message.open({
+        type: "success",
+        content: res.msg,
+      });
       navigate("/home");
-    });
+    } else {
+      message.open({
+        type: "error",
+        content: res.msg,
+      });
+    }
   };
 
   //页面初始

@@ -16,7 +16,8 @@ const routeConfige=[
     children:[
       { path:'testDetail', element:<TestDetail /> },
       { path:'testList', element:<TestList /> },
-      { path:'overTest', element:<OverTest /> }
+      { path:'overTest', element:<OverTest /> },
+      { path:'roleManagement', element:<RoleManagement /> }
     ]
   }
 ]
