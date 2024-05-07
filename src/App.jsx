@@ -1,16 +1,11 @@
-import { useRoutes } from 'react-router-dom'
-import routeConfige from './router/routes'
+import { useRoutes } from "react-router-dom";
+import routeConfige from "./router/routes";
 
-import './App.css'
+import "./App.css";
 
 function App() {
-  const router =useRoutes(routeConfige)
-  return (
-    <div>
-      {router}
-    </div>
-
-  )
+  const router = useRoutes(routeConfige);
+  return router;
 }
 
-export default App
+export default App;
