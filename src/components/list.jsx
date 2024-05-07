@@ -158,18 +158,16 @@ const List = () => {
     }
   };
   return (
-    <div>
-      <Menu
-        mode="inline"
-        defaultSelectedKeys={["1"]}
-        openKeys={stateOpenKeys}
-        onOpenChange={onOpenChange}
-        style={{
-          width: 240,
-        }}
-        items={items}
-      />
-    </div>
+    <Menu
+      mode="inline"
+      defaultSelectedKeys={["1"]}
+      openKeys={stateOpenKeys}
+      onOpenChange={onOpenChange}
+      style={{
+        width: 240,
+      }}
+      items={items}
+    />
   );
 };
 
