@@ -1,6 +1,7 @@
 // import style from './testContent.module.scss'
 import { EditableProTable, ProFormRadio } from '@ant-design/pro-components';
 import { useState } from 'react';
+// import axios from 'axios';
 
 const TestContent = () => {
   const waitTime = (time = 100) => {
@@ -28,25 +29,11 @@ const TestContent = () => {
       title: '学科名称',
       dataIndex: 'title',
       tooltip: '只读,使用form.getFieldValue获取不到值',
-      formItemProps: (form, { rowIndex }) => {
-        return {
-          rules:
-            rowIndex > 1 ? [{ required: true, message: '此项为必填项' }] : [],
-        };
-      },
-      width: '15%',
+      width: '15%'
     },
     {
       title: '学科内容',
-      dataIndex: 'decs',
-      fieldProps: (form, { rowIndex }) => {
-        if (rowIndex > 9) {
-          return {
-            disabled: true,
-          };
-        }
-        return {};
-      },
+      dataIndex: 'decs'
     },
     {
       title: '操作',
@@ -60,15 +47,7 @@ const TestContent = () => {
           }}
         >
           编辑
-        </a>,
-        <a
-          key="delete"
-          onClick={() => {
-            setDataSource(dataSource.filter((item) => item.id !== record.id));
-          }}
-        >
-          删除
-        </a>,
+        </a>
       ],
     },
   ];
