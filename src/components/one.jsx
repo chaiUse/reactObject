@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector ,useDispatch } from 'react-redux'
 import { change } from '../store/one'
 
@@ -7,9 +7,15 @@ import
 from
 "antd"
 ;
+import { getOldSearch } from '../api/one';
 const One = () => {
   const tit =useSelector(s=>s.oneStore.tit)
   const dispatch=useDispatch()
+  const fn =async ()=>{
+    const res =await getOldSearch()
+    console.log(res);
+  }
+  fn()
   return (
     <div>
       {tit}
