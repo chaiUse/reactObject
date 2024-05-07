@@ -81,6 +81,7 @@ const Home = () => {
             arrow
           >
             <Avatar size="large" icon={<UserOutlined />} />
+            <span>123</span>
           </Dropdown>
         </div>
       </div>
