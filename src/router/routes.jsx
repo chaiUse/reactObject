@@ -1,5 +1,6 @@
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
+import TestBase from "../pages/Home/testBase/TestBase";
 
 const routeConfige=[
   {
@@ -8,7 +9,13 @@ const routeConfige=[
   },
   {
     path:'/home',
-    element: <Home />
+    element: <Home />,
+    children: [
+      {
+        path: '/home/testBase',
+        element: <TestBase />
+      }
+    ]
   }
 ]
 export default routeConfige
