@@ -1,6 +1,7 @@
 import Home from "../pages/Home/Home";
 import RoleManagement from "../pages/Home/chai/RoleManagement/roleManagement";
 import Login from "../pages/Login/Login";
+import TestBase from "../pages/Home/testBase/TestBase";
 import Room from "../pages/Home/Room/Room";
 import Students from "../pages/Home/Room/Students";
 
@@ -17,12 +18,13 @@ const routeConfige=[
     path:'/home',
     element: <Home />,
     children:[
-      {path:'/home/room',element:<Room />},
-      {path:'/home/students',element:<Students />},
       { path:'testDetail', element:<TestDetail /> },
       { path:'testList', element:<TestList /> },
       { path:'overTest', element:<OverTest /> },
-      { path:'roleManagement', element:<RoleManagement /> }
+      { path:'roleManagement', element:<RoleManagement /> },
+      { path:'/home/room',element:<Room />},
+      { path:'/home/room', element:<Room />},
+      { path: '/home/testBase', element: <TestBase />}
     ]
   }
 ]

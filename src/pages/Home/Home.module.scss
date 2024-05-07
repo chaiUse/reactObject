@@ -1,52 +1,53 @@
-@import '../../index.scss';
+@import "../../index.scss";
 // 头部高度
-$up_height:100px;
-.home{
+$up_height: 100px;
+.home {
   height: 100%;
   background: $grayBackground;
 }
-.up{
+.up {
   width: 100%;
   height: $up_height;
   display: flex;
   justify-content: space-between;
   padding: 0 30px;
 }
-.box{
+.box {
   display: flex;
   height: calc(100% - $up_height);
   overflow: hidden;
-  .left{
+  .left {
     width: 300px;
     height: 100%;
   }
-  .right{
+  .right {
     flex: 1;
   }
 }
-.list{
+.list {
   display: none;
 }
-.showIco{
+.showIco {
   display: none;
 }
-.listShow{
+.listShow {
   position: fixed;
   height: 100%;
   width: 100px;
   background: $grayBackground;
+  z-index: 9;
 }
 /* 媒体查询 */
-@media screen and (max-width: 1200px) {
-  .box{
-    .left{
-      display: none;
-    }
-  }
-  .showIco{
-    display: block;
-  }
-}
+// @media screen and (max-width: 1200px) {
+//   .box{
+//     .left{
+//       display: none;
+//     }
+//   }
+//   .showIco{
+//     display: block;
+//   }
+// }
 
 // @media screen and (max-width: 480px) {
 //   .item {
