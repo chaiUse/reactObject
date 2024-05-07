@@ -23,7 +23,7 @@ const routeConfige=[
       { path:'overTest', element:<OverTest /> },
       { path:'roleManagement', element:<RoleManagement /> },
       { path:'/home/room',element:<Room />},
-      { path:'/home/room', element:<Room />},
+      { path:'/home/students', element:<Students />},
       { path: '/home/testBase', element: <TestBase />}
     ]
   }
