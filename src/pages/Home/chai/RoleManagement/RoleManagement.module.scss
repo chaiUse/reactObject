@@ -1,0 +1,17 @@
+.box{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .button{
+    display: flex;
+    justify-content: space-between;
+    .iconJia{
+      width: 15px;
+      height: 15px;
+      padding:0 3px;
+      border-radius: 50%;
+      border: 1px solid #ffffff;
+      color: #ffffff;
+    }
+  }
+}

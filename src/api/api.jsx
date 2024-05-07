@@ -1,19 +1,20 @@
-import axios from "axios"
+import axios from "axios";
 
-const cookie = encodeURIComponent(localStorage.getItem("cookie"));
+const token = localStorage.getItem("token");
 
 // 创建 Axios 实例
 const instance = axios.create({
-  baseURL: "https://zyxcl.xyz/exam_api", // 设置默认的 baseURL
+  baseURL: "/exam_api", // 设置默认的 baseURL
   timeout: 10000, // 设置超时时间
+  withCredentials: true,
 });
 
 // 请求拦截器
 instance.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
-    if (config.params) {
-      config.params.cookie = cookie;
+    if (token) {
+      config.headers.Authorization = token;
     }
     return config;
   },
