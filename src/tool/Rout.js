@@ -1,27 +1,29 @@
-const router = (res) => {
-    
-};
+import { useNavigate } from "react-router-dom";
 
-// {
-//     key: "1",
-//     icon: <InboxOutlined />,
-//     label: "系统管理",
-//     children: [
-//       {
-//         key: "11",
-//         label: "Option 1",
-//       },
-//       {
-//         key: "12",
-//         label: "Option 2",
-//       },
-//       {
-//         key: "13",
-//         label: "Option 3",
-//       },
-//       {
-//         key: "14",
-//         label: "Option 4",
-//       },
-//     ],
-//   },
+import {
+  InboxOutlined,
+  TeamOutlined,
+  ProjectOutlined,
+  FileTextOutlined,
+  SignatureOutlined,
+} from "@ant-design/icons";
+
+const navigate = useNavigate();
+export const router = (lt) => {
+  const res = lt.map((item) => {
+    return {
+      key: item.path,
+      icon: <InboxOutlined />,
+      label: item.name,
+      children: item.children.map((i) => {
+        return {
+          key: i.path,
+          label: i.name,
+          onTitleClick: () => navigate(i.path),
+        };
+      }),
+    };
+  });
+  console.log(res);
+  return res;
+};

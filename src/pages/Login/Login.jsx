@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import style from "./login.module.scss";
 
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
