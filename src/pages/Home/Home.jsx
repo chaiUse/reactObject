@@ -3,6 +3,7 @@ import style from './Home.module.scss'
 import { Outlet } from 'react-router-dom'
 import List from '../../components/list'
 import { useState } from 'react'
+import RightUp from '../../components/rightUp/rightUp'
 // import One from '../../components/one'
 const Home = () => {
   const [flage, setFlage] = useState(false)
@@ -22,7 +23,9 @@ const Home = () => {
           <div onClick={(e) =>{
             e.stopPropagation()
             setFlage(!flage)}
+          
           } 
+          className={style.showIco}
           >
             666
           </div>
@@ -34,6 +37,7 @@ const Home = () => {
           <List />
         </div>
         <div className={style.right}>
+          <RightUp />
           <Outlet />
         </div>
       </div>

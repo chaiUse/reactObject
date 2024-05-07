@@ -1,4 +1,4 @@
-import { navigator } from "react-router-dom";
+// import { navigator } from "react-router-dom";
 
 import React, { useEffect, useState } from "react";
 import style from "./login.module.scss";
@@ -20,7 +20,7 @@ const Login = () => {
     console.log("账号密码验证码", { ...values });
     getUPApi(values).then((res) => {
       localStorage.setItem("token", res.data.token);
-      navigator("/home");
+      // navigator("/home");
     });
   };
 

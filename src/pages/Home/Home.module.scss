@@ -1,8 +1,9 @@
+@import '../../index.scss';
 // 头部高度
 $up_height:100px;
 .home{
   height: 100%;
-  background: #f4f3f3;
+  background: $grayBackground;
 }
 .up{
   width: 100%;
@@ -26,11 +27,14 @@ $up_height:100px;
 .list{
   display: none;
 }
+.showIco{
+  display: none;
+}
 .listShow{
   position: fixed;
   height: 100%;
   width: 100px;
-  background: #ede8e8;
+  background: $grayBackground;
 }
 /* 媒体查询 */
 @media screen and (max-width: 1200px) {
@@ -38,6 +42,9 @@ $up_height:100px;
     .left{
       display: none;
     }
+  }
+  .showIco{
+    display: block;
   }
 }
 
