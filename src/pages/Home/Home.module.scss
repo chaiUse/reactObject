@@ -1,12 +1,21 @@
+@import '../../index.scss';
+// 头部高度
+$up_height:100px;
+.home{
+  height: 100%;
+  background: $grayBackground;
+}
 .up{
   width: 100%;
-  height: 100px;
+  height: $up_height;
   display: flex;
   justify-content: space-between;
   padding: 0 30px;
 }
 .box{
   display: flex;
+  height: calc(100% - $up_height);
+  overflow: hidden;
   .left{
     width: 300px;
     height: 100%;
@@ -15,3 +24,32 @@
     flex: 1;
   }
 }
+.list{
+  display: none;
+}
+.showIco{
+  display: none;
+}
+.listShow{
+  position: fixed;
+  height: 100%;
+  width: 100px;
+  background: $grayBackground;
+}
+/* 媒体查询 */
+@media screen and (max-width: 1200px) {
+  .box{
+    .left{
+      display: none;
+    }
+  }
+  .showIco{
+    display: block;
+  }
+}
+
+// @media screen and (max-width: 480px) {
+//   .item {
+//     width: 100%;
+//   }
+// }
