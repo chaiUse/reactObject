@@ -157,12 +157,20 @@ const List = () => {
       setStateOpenKeys(openKeys);
     }
   };
+
+  const ClickItem = ({ key, domEvent }) => {
+    console.log(key, domEvent);
+  };
   return (
     <Menu
       mode="inline"
       defaultSelectedKeys={["1"]}
       openKeys={stateOpenKeys}
       onOpenChange={onOpenChange}
+<<<<<<< HEAD
+=======
+      onTitleClick={ClickItem}
+>>>>>>> master
       style={{
         width: 240,
       }}
