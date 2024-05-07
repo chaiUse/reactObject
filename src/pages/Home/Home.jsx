@@ -3,6 +3,7 @@ import style from "./Home.module.scss";
 import { Outlet } from "react-router-dom";
 import List from "../../components/list";
 import { useEffect, useState } from "react";
+import RightUp from "../../components/rightUp/rightUp";
 // import One from '../../components/one'
 
 import { Avatar } from "antd";
@@ -23,31 +24,27 @@ const Home = () => {
   }, []);
 
   return (
-    <>
-      <div onClick={() => setFlage(true)} className={style.home}>
-        <div
-          className={`${flage ? style.list : style.listShow}`}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <List />
-        </div>
+    <div onClick={() => setFlage(true)} className={style.home}>
+      <div
+        className={`${flage ? style.list : style.listShow}`}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <List />
+      </div>
 
-        <div className={style.up}>
-          <div>
-            图标
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                setFlage(!flage);
-              }}
-            >
-              666
-            </div>
-          </div>
-          <div>
-            <Avatar size="large" icon={<UserOutlined />} />
+      <div className={style.up}>
+        <div>
+          图标
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              setFlage(!flage);
+            }}
+            className={style.showIco}
+          >
+            666
           </div>
         </div>
         <div className={style.box}>
@@ -55,11 +52,12 @@ const Home = () => {
             <List />
           </div>
           <div className={style.right}>
+            <RightUp />
             <Outlet />
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
