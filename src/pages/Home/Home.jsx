@@ -26,7 +26,7 @@ const Home = () => {
   return (
     <div onClick={() => setFlage(true)} className={style.home}>
       <div
-        className={`${flage ? style.list : style.listShow}`}
+        className={`${flage ?  style.listShow:style.list }`}
         onClick={(e) => {
           e.stopPropagation();
         }}
