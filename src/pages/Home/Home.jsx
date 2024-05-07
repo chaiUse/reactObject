@@ -9,10 +9,10 @@ const Home = () => {
   const [flage, setFlage] = useState(false)
   return (
     <>
-      <div onClick={() => setFlage(true)} 
+      <div onClick={() => setFlage(false)} 
         className={style.home}
       >
-      <div className={`${flage ? style.list : style.listShow}`} onClick={(e)=>{e.stopPropagation()}}>
+      <div className={`${flage ?  style.listShow :style.list }`} onClick={(e)=>{e.stopPropagation()}}>
         <List />
       </div>
 

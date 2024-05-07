@@ -14,7 +14,7 @@ instance.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
     if (config.params) {
-      // config.params.cookie = cookie;
+      config.params.cookie = cookie;
     }
     return config;
   },
