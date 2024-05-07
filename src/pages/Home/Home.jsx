@@ -9,7 +9,9 @@ import RightUp from "../../components/rightUp/rightUp";
 import { Avatar, Dropdown } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
-import { getUserInfoApi } from "../../api/user";
+import { getUserInfoApi, getListApi } from "../../api/user";
+
+import { router } from "../../tool/Rout";
 
 const Home = () => {
   const [flage, setFlage] = useState(false);
@@ -17,11 +19,17 @@ const Home = () => {
   //用户信息
   const [userInfo, setUser] = useState({});
 
+  const [list, setList] = useState([]);
+
+  const getlist = async () => {
+    const ls = await getUserInfoApi();
+    const lt = await getListApi();
+    const res = router(ls.data.permission, lt.data.list);
+    setList(res);
+  };
+
   useEffect(() => {
-    getUserInfoApi().then((res) => {
-      console.log(res.data);
-      setUser(res.data);
-    });
+    getlist();
   }, []);
   console.log();
   const items = [

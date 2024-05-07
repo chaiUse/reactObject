@@ -4,3 +4,8 @@ import instance from "./api";
 export const getUserInfoApi = () => {
   return instance.get("/user/info");
 };
+
+//
+export const getListApi = () => {
+  return instance.get("/permission/list");
+};

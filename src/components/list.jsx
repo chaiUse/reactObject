@@ -167,7 +167,6 @@ const List = () => {
       defaultSelectedKeys={["1"]}
       openKeys={stateOpenKeys}
       onOpenChange={onOpenChange}
-      onTitleClick={ClickItem}
       style={{
         width: 240,
       }}
