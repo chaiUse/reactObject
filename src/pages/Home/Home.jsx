@@ -50,11 +50,7 @@ const Home = () => {
   return (
     <div onClick={() => setFlage(false)} className={style.home}>
       <div
-<<<<<<< HEAD
-        className={`${flage ? style.listShow:style.list }`}
-=======
         className={`${flage ? style.listShow : style.list}`}
->>>>>>> d93e85fddf5f0c8eafc1d8db038f585410389c68
         onClick={(e) => {
           e.stopPropagation();
         }}
