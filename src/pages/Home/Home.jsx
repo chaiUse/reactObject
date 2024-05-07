@@ -24,6 +24,7 @@ const Home = () => {
     });
   }, []);
   console.log();
+
   const items = [
     {
       key: "1",
@@ -80,8 +81,10 @@ const Home = () => {
             placement="bottom"
             arrow
           >
-            <Avatar size="large" icon={<UserOutlined />} />
-            <span>123</span>
+            <div>
+              <Avatar size="large" icon={<UserOutlined />} />
+              {userInfo?.username}
+            </div>
           </Dropdown>
         </div>
       </div>

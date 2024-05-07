@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 
 import { useState } from "react";
 
@@ -157,12 +157,17 @@ const List = () => {
       setStateOpenKeys(openKeys);
     }
   };
+
+  const ClickItem = ({ key, domEvent }) => {
+    console.log(key, domEvent);
+  };
   return (
     <Menu
       mode="inline"
       defaultSelectedKeys={["1"]}
       openKeys={stateOpenKeys}
       onOpenChange={onOpenChange}
+      onTitleClick={ClickItem}
       style={{
         width: 240,
       }}
