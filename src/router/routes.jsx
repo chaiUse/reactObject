@@ -1,6 +1,7 @@
 import Home from "../pages/Home/Home";
 import RoleManagement from "../pages/Home/chai/RoleManagement/roleManagement";
 import Login from "../pages/Login/Login";
+import TestBase from "../pages/Home/testBase/TestBase";
 import Room from "../pages/Home/Room/Room";
 import { lazy } from "react";
 const TestDetail = lazy(() => import('../pages/Home/studentSystem/testDetail'))
@@ -15,16 +16,13 @@ const routeConfige=[
     path:'/home',
     element: <Home />,
     children:[
-      {
-        path:'/home/room',
-        element:<Room />
-      }
-    ],
-    children:[
       { path:'testDetail', element:<TestDetail /> },
       { path:'testList', element:<TestList /> },
       { path:'overTest', element:<OverTest /> },
-      { path:'roleManagement', element:<RoleManagement /> }
+      { path:'roleManagement', element:<RoleManagement /> },
+      { path:'/home/room',element:<Room />},
+      { path:'/home/room', element:<Room />},
+      { path: '/home/testBase', element: <TestBase />}
     ]
   }
 ]

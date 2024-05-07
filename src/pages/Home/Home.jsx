@@ -1,10 +1,10 @@
-// import React from 'react's
-import style from "./Home.module.scss";
-import { Outlet } from "react-router-dom";
+// import React from 'react'
+import style from './Home.module.scss'
+import { Outlet } from 'react-router-dom'
+
 import List from "../../components/list";
 import { useEffect, useState } from "react";
 import RightUp from "../../components/rightUp/rightUp";
-// import One from '../../components/one'
 
 import { Avatar, Dropdown } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -32,6 +32,7 @@ const Home = () => {
     getlist();
   }, []);
   console.log();
+
   const items = [
     {
       key: "1",
