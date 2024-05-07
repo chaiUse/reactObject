@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 
 import { useState } from "react";
 
@@ -167,10 +167,7 @@ const List = () => {
       defaultSelectedKeys={["1"]}
       openKeys={stateOpenKeys}
       onOpenChange={onOpenChange}
-<<<<<<< HEAD
-=======
       onTitleClick={ClickItem}
->>>>>>> master
       style={{
         width: 240,
       }}
