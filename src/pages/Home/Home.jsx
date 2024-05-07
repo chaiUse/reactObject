@@ -7,7 +7,6 @@ import RightUp from "../../components/rightUp/rightUp";
 // import One from '../../components/one'
 
 import { Avatar, Dropdown } from "antd";
-import { Avatar, Dropdown } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
 import { getUserInfoApi } from "../../api/user";
@@ -25,29 +24,7 @@ const Home = () => {
     });
   }, []);
   console.log();
-  const items = [
-    {
-      key: "1",
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.antgroup.com"
-        >
-          个人信息
-        </a>
-      ),
-    },
-    {
-      key: "2",
-      label: (
-        <a target="_blank" rel="noopener noreferrer">
-          退出登录
-        </a>
-      ),
-    },
-  ];
-  console.log();
+  
   const items = [
     {
       key: "1",
@@ -73,9 +50,7 @@ const Home = () => {
 
   return (
     <div onClick={() => setFlage(false)} className={style.home}>
-    <div onClick={() => setFlage(false)} className={style.home}>
       <div
-        className={`${flage ? style.listShow : style.list}`}
         className={`${flage ? style.listShow : style.list}`}
         onClick={(e) => {
           e.stopPropagation();
