@@ -3,6 +3,7 @@ import RoleManagement from "../pages/Home/chai/RoleManagement/roleManagement";
 import Login from "../pages/Login/Login";
 import Room from "../pages/Home/Room/Room";
 import { lazy } from "react";
+import TestPaper from '../pages/Home/testpaper/testPaper'
 const TestDetail = lazy(() => import('../pages/Home/studentSystem/testDetail'))
 const TestList = lazy(() => import('../pages/Home/studentSystem/testList'))
 const OverTest = lazy(() => import('../pages/Home/studentSystem/overTest'))
@@ -14,17 +15,16 @@ const routeConfige=[
   {
     path:'/home',
     element: <Home />,
-    children:[
-      {
-        path:'/home/room',
-        element:<Room />
-      }
-    ],
+    // eslint-disable-next-line no-dupe-keys
     children:[
       { path:'testDetail', element:<TestDetail /> },
       { path:'testList', element:<TestList /> },
       { path:'overTest', element:<OverTest /> },
-      { path:'roleManagement', element:<RoleManagement /> }
+      { path:'roleManagement', element:<RoleManagement /> },
+      {
+        path:'/home/testPaper',
+        element:<TestPaper />
+      }
     ]
   }
 ]

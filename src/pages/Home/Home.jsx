@@ -5,7 +5,7 @@ import List from "../../components/list";
 import { useEffect, useState } from "react";
 import RightUp from "../../components/rightUp/rightUp";
 // import One from '../../components/one'
-
+import TestPaper from '../../pages/Home/testpaper/testPaper'
 import { Avatar, Dropdown } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
@@ -48,7 +48,7 @@ const Home = () => {
   ];
 
   return (
-    <div onClick={() => setFlage(false)} className={style.home}>
+    <>
     <div onClick={() => setFlage(false)} className={style.home}>
       <div
         className={`${flage ? style.listShow : style.list}`}
@@ -91,10 +91,15 @@ const Home = () => {
         </div>
         <div className={style.right}>
           <RightUp />
+          {/* <div className={style.TestPaper}>
+        <TestPaper/>
+        </div> */}
           <Outlet />
         </div>
+        
       </div>
     </div>
+    </>
   );
 };
 

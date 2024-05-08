@@ -1,5 +1,8 @@
 
+
 import style from './rightUp.module.scss'
+
+
 
 const RightUp = () => {
   return (
