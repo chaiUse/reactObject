@@ -6,16 +6,16 @@ import Room from "../pages/Home/Room/Room";
 import Students from "../pages/Home/Room/Students";
 
 import { lazy } from "react";
-const TestDetail = lazy(() => import('../pages/Home/studentSystem/testDetail'))
-const TestList = lazy(() => import('../pages/Home/studentSystem/testList'))
-const OverTest = lazy(() => import('../pages/Home/studentSystem/overTest'))
-const routeConfige=[
+const TestDetail = lazy(() => import("../pages/Home/studentSystem/testDetail"));
+const TestList = lazy(() => import("../pages/Home/studentSystem/testList"));
+const OverTest = lazy(() => import("../pages/Home/studentSystem/overTest"));
+const routeConfige = [
   {
-    path:'/',
-    element: <Login />
+    path: "/",
+    element: <Login />,
   },
   {
-    path:'/home',
+    path: "/home",
     element: <Home />,
     children:[
       { path:'testDetail', element:<TestDetail /> },
