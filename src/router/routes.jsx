@@ -17,15 +17,16 @@ const routeConfige = [
   {
     path: "/home",
     element: <Home />,
-    children:[
-      { path:'testDetail', element:<TestDetail /> },
-      { path:'testList', element:<TestList /> },
-      { path:'overTest', element:<OverTest /> },
-      { path:'/home/userManage/system', element:<RoleManagement /> },
-      { path:'/home/room',element:<Room />},
-      { path:'/home/students', element:<Students />},
-      { path: '/home/testBase', element: <TestBase />}
-    ]
-  }
-]
-export default routeConfige
+    children: [
+      { path: "testDetail", element: <TestDetail /> },
+      { path: "testList", element: <TestList /> },
+      { path: "overTest", element: <OverTest /> },
+      //照这个写路由
+      { path: "/home/userManage/system", element: <RoleManagement /> },
+      { path: "/home/room", element: <Room /> },
+      { path: "/home/students", element: <Students /> },
+      { path: "/home/testBase", element: <TestBase /> },
+    ],
+  },
+];
+export default routeConfige;
