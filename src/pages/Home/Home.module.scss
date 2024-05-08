@@ -4,6 +4,7 @@ $up_height: 100px;
 .home {
   height: 100%;
   background: $grayBackground;
+  overflow: auto;
 }
 .up {
   width: 100%;
