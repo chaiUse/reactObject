@@ -16,6 +16,7 @@ instance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = token;
     }
+    console.log(config);
     return config;
   },
   function (error) {

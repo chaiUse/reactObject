@@ -1,6 +1,9 @@
 import instance from './api'
 
-//创建题库
+//创建科目
 export const getCreateTest = () => {
-  return instance.post('/question/create')
+  return instance.post('/classify/create',{
+    "name": "react",
+    "value": "react"
+  })
 }
