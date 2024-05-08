@@ -6,26 +6,26 @@ import Room from "../pages/Home/Room/Room";
 import Students from "../pages/Home/Room/Students";
 
 import { lazy } from "react";
-const TestDetail = lazy(() => import('../pages/Home/studentSystem/testDetail'))
-const TestList = lazy(() => import('../pages/Home/studentSystem/testList'))
-const OverTest = lazy(() => import('../pages/Home/studentSystem/overTest'))
-const routeConfige=[
+const TestDetail = lazy(() => import("../pages/Home/studentSystem/testDetail"));
+const TestList = lazy(() => import("../pages/Home/studentSystem/testList"));
+const OverTest = lazy(() => import("../pages/Home/studentSystem/overTest"));
+const routeConfige = [
   {
-    path:'/',
-    element: <Login />
+    path: "/",
+    element: <Login />,
   },
   {
-    path:'/home',
+    path: "/home",
     element: <Home />,
-    children:[
-      { path:'testDetail', element:<TestDetail /> },
-      { path:'testList', element:<TestList /> },
-      { path:'overTest', element:<OverTest /> },
-      { path:'roleManagement', element:<RoleManagement /> },
-      { path:'/home/room',element:<Room />},
-      { path:'/home/students', element:<Students />},
-      { path: '/home/testBase', element: <TestBase />}
-    ]
-  }
-]
-export default routeConfige
+    children: [
+      { path: "testDetail", element: <TestDetail /> },
+      { path: "testList", element: <TestList /> },
+      { path: "overTest", element: <OverTest /> },
+      { path: "roleManagement", element: <RoleManagement /> },
+      { path: "/home/room", element: <Room /> },
+      { path: "/home/students", element: <Students /> },
+      { path: "/home/testBase", element: <TestBase /> },
+    ],
+  },
+];
+export default routeConfige;
