@@ -3,8 +3,6 @@ import { Table } from "antd";
 import { useEffect } from "react";
 
 function table(props) {
-  console.log(props.list, props.max);
-
   useEffect(() => {}, []);
   return (
     <div>

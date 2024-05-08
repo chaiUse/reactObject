@@ -33,6 +33,9 @@ const Login = () => {
         type: "error",
         content: res.msg,
       });
+      getCapTchaApi().then((res) => {
+        setImg(res.data.code);
+      });
     }
   };
 
