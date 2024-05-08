@@ -15,7 +15,12 @@ import style from "./manage.module.scss";
 
 import Table from "../../../components/table/table";
 
-import { getUserListApi, delUserApi } from "../../../api/user/user";
+import {
+  getUserListApi,
+  delUserApi,
+  addUserApi,
+  UpdataApi,
+} from "../../../api/user/user";
 import { useEffect } from "react";
 
 function managePage() {
@@ -49,6 +54,7 @@ function managePage() {
       form.setFieldValue("password", data.password);
       form.setFieldValue("codepassword", data.password);
       form.setFieldValue("status", data.status);
+      form.setFieldValue("id", data._id);
     } else {
       setType("add");
       // 添加用户时，将表单数据设置为空值或默认值
@@ -61,20 +67,52 @@ function managePage() {
   };
   //点击确定
   const handleOk = () => {
-    if (type === "add") {
-      //添加
-      if (
-        form.getFieldValue("password") === form.getFieldValue("codepassword")
-      ) {
-        const data = {
-          username: form.getFieldValue("username"),
-          password: form.getFieldValue("password"),
-          status: form.getFieldValue("status"),
-        };
-       
+    if (form.getFieldValue("password") === form.getFieldValue("codepassword")) {
+      const data = {
+        username: form.getFieldValue("username"),
+        password: form.getFieldValue("password"),
+        status: form.getFieldValue("status"),
+      };
+      if (type === "add") {
+        //添加
+        addUserApi(data).then((res) => {
+          console.log(res);
+          if (res.code === 200) {
+            message.open({
+              type: "success",
+              content: res.msg,
+            });
+            getlist();
+            setModal(false);
+          } else {
+            message.open({
+              type: "error",
+              content: res.msg,
+            });
+          }
+        });
+      } else {
+        UpdataApi(form.getFieldValue("id"), data).then((res) => {
+          if (res.code === 200) {
+            message.open({
+              type: "success",
+              content: res.msg,
+            });
+            getlist();
+            setModal(false);
+          } else {
+            message.open({
+              type: "error",
+              content: res.msg,
+            });
+          }
+        });
       }
-    }else{
-      
+    } else {
+      message.open({
+        type: "error",
+        content: "密码不一致",
+      });
     }
   };
 
