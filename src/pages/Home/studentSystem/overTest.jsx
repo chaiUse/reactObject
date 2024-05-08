@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 const OverTest = () => {
     const[list,setList] = useState([])
     useEffect(() => {
-        axios.get('http://192.168.28.11:3001/student/exam/submit').then(res => {
+        axios.post('http://192.168.28.11:3001/student/exam/submit').then(res => {
             console.log(res);
             setList(res.data)
         })

@@ -10,7 +10,7 @@ import { Avatar, Dropdown } from "antd";
 
 import { UserOutlined } from "@ant-design/icons";
 
-import { getUserInfoApi, getListApi } from "../../api/user";
+import { getUserInfoApi, getListApi } from "../../api/user/user";
 
 const Home = () => {
   const [flage, setFlage] = useState(false);
@@ -24,7 +24,6 @@ const Home = () => {
     const ls = await getUserInfoApi();
     const lt = await getListApi();
     setUser(ls.data);
-
     setList(lt.data);
   };
 
