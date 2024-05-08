@@ -24,7 +24,7 @@ const Home = () => {
     const ls = await getUserInfoApi();
     const lt = await getListApi();
     setUser(ls.data);
-
+    console.log(lt.data);
     setList(lt.data);
   };
 
