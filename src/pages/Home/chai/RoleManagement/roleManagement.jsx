@@ -2,12 +2,23 @@
 import style from './RoleManagement.module.scss'
 import { useEffect, useState } from 'react';
 
-import { queryRoleApi, createRole,delRole } from '../../../../api/chai/chia';
+import { queryRoleApi, createRole, delRole } from '../../../../api/chai/chia';
 
 import { PlusCircleOutlined } from '@ant-design/icons';
 
-import { Popconfirm, Drawer, Button, Table, Pagination, Modal, Form, Input, Select, Space } from "antd";
+import { Popconfirm, Drawer, Button, Table, Pagination, Modal, Form, Input, Select, Space ,message} from "antd";
 const RoleManagement = () => {
+  //#region 全局提示数据
+  const [messageApi, contextHolder] = message.useMessage();
+  const success = () => {
+    console.log(2);
+    messageApi.open({
+      type: 'success',
+      content: 'This is a success message',
+    });
+  };
+  //#endregion
+
   //#region   新增角色 ，弹窗变量以及方法
   // 浮窗开关
   const [open, setOpen] = useState(false);
@@ -50,7 +61,17 @@ const RoleManagement = () => {
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    createNewUser(values)
+    createNewUser(values).then(
+      res=>{
+        console.log('添加成功',res);
+        messageApi.open({
+          type: 'success',
+          content: '添加用户成功',
+        });
+        getDate(page, pageSize)
+      }
+    )
+
     console.log(values);
 
   };
@@ -58,13 +79,13 @@ const RoleManagement = () => {
 
   //#region 数据变量及获取
   // 删除角色数据
-  const [page,setPage] = useState(5)
-  const [pageSize,setPageSize] = useState(1)
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(5)
   const [dataSource, setDataSource] = useState([])
   const [list, setlist] = useState({})
   const getDate = async (page, pageSize) => {
     const res = await queryRoleApi(page, pageSize)
-    console.log(res.data);
+    console.log('获取数据', res.data);
     setlist(res.data)
     res.data.list.forEach((a, b) => {
       a.key = b + 1 + ''
@@ -104,16 +125,28 @@ const RoleManagement = () => {
         if (record.name !== '') {
 
           return (<div>
-            <Button type="primary" >
+            <Button type="primary" onClick={showDrawer}>
               分配角色
             </Button>
             <Popconfirm
               placement="top"
               title={textl}
               description={description}
-              onConfirm={()=>{
+              onConfirm={() => {
                 console.log(record._id);
-                delRole({id:record._id})
+                delRole({ id: record._id })
+                  .then(
+                    res => {
+                      console.log('删除角色反馈', res)
+                      if(res.code===200){
+                        getDate(page, pageSize)
+                        messageApi.open({
+                          type: 'success',
+                          content: '删除用户成功',
+                        });
+                      }
+                    }
+                  )
               }}
               okText="确定"
               cancelText="取消"
@@ -139,10 +172,22 @@ const RoleManagement = () => {
   const textl = '删除角色  ?';
   const description = '确定删除该角色吗?';
   const buttonWidth = 80;
-  const onConfirm=()=>{
-      console.log(1);
+  const onConfirm = () => {
+    console.log(1);
   }
   //#endregion
+
+  //#region 编辑角色数据
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const showDrawer = () => {
+    setOpenDrawer(true);
+    console.log(openDrawer  );
+  };
+  const onClose = () => {
+    setOpenDrawer(false);
+  };
+  //#endregion
+
 
 
   useEffect(() => {
@@ -220,13 +265,20 @@ const RoleManagement = () => {
               x: 10
             },
             onChange: (page, pageSize) => {
-              // getDate(page, pageSize)
+              getDate(page, pageSize)
               setPage(page)
               setPageSize(pageSize)
             }
           }}
         />
       </div>
+      {/* 全局提示 */}
+      {contextHolder}
+      <Drawer title="Basic Drawer" onClose={onClose} open={openDrawer}>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Drawer>
     </div>
   )
 }
