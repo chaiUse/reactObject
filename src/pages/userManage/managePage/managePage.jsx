@@ -24,6 +24,8 @@ import {
 } from "../../../api/user/user";
 import { useEffect } from "react";
 
+import date from "../../../tool/date";
+
 function managePage() {
   const [form] = Form.useForm();
   const [list, setlist] = useState([]);
@@ -188,6 +190,7 @@ function managePage() {
       title: "最近登录",
       dataIndex: "lastOnlineTime",
       key: "lastOnlineTime",
+      render: (text, record) => date(text),
     },
     {
       title: "创建人",
