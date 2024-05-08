@@ -1,29 +1,37 @@
-// import React from 'react's
+// import React from 'react'
 import style from "./Home.module.scss";
 import { Outlet } from "react-router-dom";
+
 import List from "../../components/list";
 import { useEffect, useState } from "react";
 import RightUp from "../../components/rightUp/rightUp";
 // import One from '../../components/one'
 import TestPaper from '../../pages/Home/testpaper/testPaper'
 import { Avatar, Dropdown } from "antd";
+
 import { UserOutlined } from "@ant-design/icons";
 
-import { getUserInfoApi } from "../../api/user";
+import { getUserInfoApi, getListApi } from "../../api/user/user";
 
 const Home = () => {
   const [flage, setFlage] = useState(false);
 
   //用户信息
   const [userInfo, setUser] = useState({});
+  //左侧列表
+  const [list, setList] = useState([]);
+  //进行获取列表和用户信息
+  const getlist = async () => {
+    const ls = await getUserInfoApi();
+    const lt = await getListApi();
+    setUser(ls.data);
+    setList(lt.data);
+  };
 
   useEffect(() => {
-    getUserInfoApi().then((res) => {
-      console.log(res.data);
-      setUser(res.data);
-    });
+    getlist();
   }, []);
-  console.log();
+
   const items = [
     {
       key: "1",
@@ -56,7 +64,7 @@ const Home = () => {
           e.stopPropagation();
         }}
       >
-        <List />
+        <List list={list} />
       </div>
 
       <div className={style.up}>
@@ -81,13 +89,16 @@ const Home = () => {
             placement="bottom"
             arrow
           >
-            <Avatar size="large" icon={<UserOutlined />} />
+            <div>
+              <Avatar size="large" icon={<UserOutlined />} />
+              {userInfo?.username}
+            </div>
           </Dropdown>
         </div>
       </div>
       <div className={style.box}>
         <div className={style.left}>
-          <List />
+          <List list={list} />
         </div>
         <div className={style.right}>
           <RightUp />
