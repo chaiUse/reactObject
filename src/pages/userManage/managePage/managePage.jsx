@@ -9,6 +9,7 @@ import {
   Form,
   Input,
   Radio,
+  Pagination,
 } from "antd";
 
 import style from "./manage.module.scss";
