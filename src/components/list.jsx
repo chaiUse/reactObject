@@ -26,14 +26,14 @@ const List = (props) => {
   const router = (lt) => {
     const res = lt.list?.map((item, index) => {
       return {
-        key: item.path,
+        key: '/home'+item.path,
         icon: icon[index],
         label: item.name,
         children: item.children.map((i) => {
           return {
-            key: i.path,
+            key: '/home'+i.path,
             label: i.name,
-            onClick: () => navigate(i.path),
+            onClick: () => navigate('/home'+i.path),
           };
         }),
       };
