@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import style from "./login.module.scss";
 
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Col, Row } from "antd";
 import { Button, Form, Input, message } from "antd";
 
-import { getCapTchaApi, getUPApi } from "../../api/login";
+import { getCapTchaApi, getUPApi } from "../../api/login/login";
 
 const Login = () => {
   //定义数据
