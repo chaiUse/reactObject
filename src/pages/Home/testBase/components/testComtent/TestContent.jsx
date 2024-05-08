@@ -26,12 +26,12 @@ const TestContent = () => {
   },[])
   const columns = [
     {
-      title: '活动名称',
+      title: '学科名称',
       dataIndex: 'name',
       width: '15%',
     },
     {
-      title: '描述',
+      title: '学科内容',
       dataIndex: 'value',
     },
     {
@@ -55,7 +55,7 @@ const TestContent = () => {
     <>
     <EditableProTable
       rowKey="_id"
-      headerTitle="可编辑表格"
+      headerTitle="学科创建表"
       maxLength={5}
       scroll={{
         x: 960,
