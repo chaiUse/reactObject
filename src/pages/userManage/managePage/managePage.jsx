@@ -121,6 +121,29 @@ function managePage() {
   const handleCancel = () => {
     setModal(false);
   };
+
+  //开关
+  const onChange = (data) => {
+    console.log(data);
+    const obj = {
+      status: data.status ? 0 : 1,
+    };
+    UpdataApi(data._id, obj).then((res) => {
+      console.log(res);
+      if (res.code === 200) {
+        message.open({
+          type: "success",
+          content: res.msg,
+        });
+        getlist();
+      } else {
+        message.open({
+          type: "error",
+          content: res.msg,
+        });
+      }
+    });
+  };
   //初始化
   useEffect(() => {
     getlist();
@@ -144,6 +167,7 @@ function managePage() {
       key: "status",
       render: (text, record) => (
         <Switch
+          onChange={() => onChange(record)}
           checkedChildren="启用"
           unCheckedChildren="禁用"
           checked={text}
