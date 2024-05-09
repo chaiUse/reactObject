@@ -3,6 +3,7 @@ import RoleManagement from "../pages/Home/chai/RoleManagement/roleManagement";
 import Login from "../pages/Login/Login";
 import Room from "../pages/Home/Room/Room";
 import Students from "../pages/Home/Room/Students";
+import PermissionMenu from "../pages/PermissionMenu/PermissionMenu";
 import ManagePage from "../pages/userManage/managePage/managePage";
 import Personal from "../pages/userManage/personal/personal";
 import TestContent from "../pages/Home/testBase/testComtent/TestContent";
@@ -37,6 +38,7 @@ const routeConfige = [
       { path: "/home/question/create-subject", element: <TestContent/> },
       { path: "/home/question/item-bank", element: <TestKu/> },
       { path: "/home/question/create-item", element: <TestNew/> },
+      { path: "permissionMenu", element: <PermissionMenu /> },
     ],
   },
 ];

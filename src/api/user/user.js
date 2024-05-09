@@ -26,3 +26,44 @@ export const delUserApi = (id) => {
     id,
   });
 };
+
+//创建用户
+export const addUserApi = (data) => {
+  return instance.post("/user/create", {
+    ...data,
+  });
+};
+
+//编辑用户
+export const UpdataApi = (id, data) => {
+  return instance.post("/user/update", {
+    id,
+    ...data,
+  });
+};
+
+//修改个人信息
+export const UpdataUserInfoApi = (
+  username,
+  password,
+  sex,
+  age,
+  email,
+  avator
+) => {
+  return instance.post("/user/update/info", {
+    username,
+    password,
+    sex,
+    age,
+    email,
+    avator,
+  });
+};
+
+//上传头像
+export const UpprofileApi = (avatar) => {
+  return instance.post("/profile", {
+    avatar,
+  });
+};
