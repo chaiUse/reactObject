@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 const RightUp = () => {
   const loscation = useLocation()
-  console.log(location.hash);
+  console.log(location);
 
 
 
@@ -69,7 +69,7 @@ const RightUp = () => {
       <Breadcrumb
         items={items}
       />
-      <p className={style.tit}>角色管理</p>
+      <p className={style.tit}>{items[2]?.title}</p>
       {/* {list} */}
     </div>
   )

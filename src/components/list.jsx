@@ -25,7 +25,7 @@ const List = (props) => {
         key: "/home" + item.path,
         icon: icon[index],
         label: item.name,
-        children: item.children.map((i) => {
+        children: item.children?.map((i) => {
           return {
             key: "/home" + i.path,
             label: i.name,
@@ -38,7 +38,7 @@ const List = (props) => {
   };
 
   return (
-   <div>
+   <div style={{height:'100%',overflow:'auto'}}>
      <Menu
       mode="inline"
       defaultSelectedKeys={["/userManage", "/userManage/personal"]}
