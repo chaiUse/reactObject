@@ -4,6 +4,7 @@ $up_height: 100px;
 .home {
   height: 100%;
   background: $grayBackground;
+  overflow: auto;
 }
 .up {
   width: 100%;
@@ -11,6 +12,8 @@ $up_height: 100px;
   display: flex;
   justify-content: space-between;
   padding: 0 30px;
+  background: #000;
+  color: #fff;
 }
 .box {
   display: flex;

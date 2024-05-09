@@ -1,0 +1,18 @@
+@import "../../../index.scss";
+.manage {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  overflow: auto;
+  padding: 0 20px;
+  padding-bottom: 300px;
+  margin-top: 20px;
+  background: $whiteBackground;
+  min-width: 1188px;
+}
+
+.btn {
+  width: 216px;
+  display: flex;
+  justify-content: space-between;
+}

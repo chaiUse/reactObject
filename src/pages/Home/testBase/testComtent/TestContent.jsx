@@ -1,6 +1,7 @@
-// import style from './testContent.module.scss'
+import style from './testContent.module.scss'
+import { useEffect, useState } from 'react';
+import { getTestListApi } from '../../../../api/testBases/testbaseApi';
 import { EditableProTable, ProFormRadio } from '@ant-design/pro-components';
-import { useState } from 'react';
 
 const TestContent = () => {
   const waitTime = (time = 100) => {
@@ -10,43 +11,28 @@ const TestContent = () => {
       }, time);
     });
   };
-  const defaultData = [
-    {
-      id: 624748504,
-      title: '语文',
-      decs: '中国古诗词',
-      state: 'open',
-      created_at: 1590486176000,
-      update_at: 1590486176000,
-    },
-  ];
+
   const [editableKeys, setEditableRowKeys] = useState([]);
   const [dataSource, setDataSource] = useState([]);
   const [position, setPosition] = useState('bottom');
+   //调用科目列表接口
+  const getTestList = async() => {
+    const ret = await getTestListApi()
+    setDataSource(ret.data.list);
+  }
+  
+  useEffect(()=>{
+    getTestList()
+  },[])
   const columns = [
     {
       title: '学科名称',
-      dataIndex: 'title',
-      tooltip: '只读,使用form.getFieldValue获取不到值',
-      formItemProps: (form, { rowIndex }) => {
-        return {
-          rules:
-            rowIndex > 1 ? [{ required: true, message: '此项为必填项' }] : [],
-        };
-      },
+      dataIndex: 'name',
       width: '15%',
     },
     {
       title: '学科内容',
-      dataIndex: 'decs',
-      fieldProps: (form, { rowIndex }) => {
-        if (rowIndex > 9) {
-          return {
-            disabled: true,
-          };
-        }
-        return {};
-      },
+      dataIndex: 'value',
     },
     {
       title: '操作',
@@ -56,40 +42,29 @@ const TestContent = () => {
         <a
           key="editable"
           onClick={() => {
-            action?.startEditable?.(record.id);
+            action?.startEditable?.(record._id);
           }}
         >
           编辑
-        </a>,
-        <a
-          key="delete"
-          onClick={() => {
-            setDataSource(dataSource.filter((item) => item.id !== record.id));
-          }}
-        >
-          删除
-        </a>,
+        </a>
       ],
     },
   ];
 
   return (
-    <>
+    <div className={style.testContent} >
       <EditableProTable
-        rowKey="id"
+        rowKey="_id"
         headerTitle="学科创建表"
         maxLength={5}
         scroll={{
           x: 960,
         }}
-        recordCreatorProps={
-          position !== 'hidden'
-            ? {
-                position: position ,
-                record: () => ({ id: (Math.random() * 1000000).toFixed(0) }),
-              }
-            : false
-        }
+        recordCreatorProps={{
+          position: position ,
+          // 每次新增的时候需要Key
+          record: () => ({ _id: (Math.random() * 1000000).toFixed(0) }),
+        }}
         loading={false}
         toolBarRender={() => [
           <ProFormRadio.Group
@@ -115,11 +90,6 @@ const TestContent = () => {
           />,
         ]}
         columns={columns}
-        request={async () => ({
-          data: defaultData,
-          total: 3,
-          success: true,
-        })}
         value={dataSource}
         onChange={setDataSource}
         editable={{
@@ -132,7 +102,7 @@ const TestContent = () => {
           onChange: setEditableRowKeys,
         }}
       />
-    </>
+    </div>
   );
 };
 

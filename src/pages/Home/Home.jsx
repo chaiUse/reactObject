@@ -7,32 +7,29 @@ import { useEffect, useState } from "react";
 import RightUp from "../../components/rightUp/rightUp";
 
 import { Avatar, Dropdown } from "antd";
+
 import { UserOutlined } from "@ant-design/icons";
 
-import { getUserInfoApi, getListApi } from "../../api/user";
-
-import { router } from "../../tool/Rout";
+import { getUserInfoApi, getListApi } from "../../api/user/user";
 
 const Home = () => {
   const [flage, setFlage] = useState(false);
 
   //用户信息
   const [userInfo, setUser] = useState({});
-
+  //左侧列表
   const [list, setList] = useState([]);
-
+  //进行获取列表和用户信息
   const getlist = async () => {
     const ls = await getUserInfoApi();
     const lt = await getListApi();
     setUser(ls.data);
-    const res = router(ls.data.permission, lt.data.list);
-    setList(res);
+    setList(lt.data);
   };
 
   useEffect(() => {
     getlist();
   }, []);
-  console.log();
 
   const items = [
     {
@@ -65,7 +62,7 @@ const Home = () => {
           e.stopPropagation();
         }}
       >
-        <List />
+        <List list={list} />
       </div>
 
       <div className={style.up}>
@@ -99,7 +96,7 @@ const Home = () => {
       </div>
       <div className={style.box}>
         <div className={style.left}>
-          <List />
+          <List list={list} />
         </div>
         <div className={style.right}>
           <RightUp />

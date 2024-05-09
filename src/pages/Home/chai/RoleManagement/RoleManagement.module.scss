@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  // width: 40%;
+  overflow: auto;
   .button{
     display: flex;
     justify-content: space-between;
@@ -14,4 +16,26 @@
       color: #ffffff;
     }
   }
+}
+
+// tr {
+//   height: 125px; /* 设置单元格的高度 */
+//   overflow: hidden; /* 控制文本溢出时的显示方式 */
+// }
+.list {
+  height: 600px; /* 设置容器的固定高度 */
+  overflow-y: auto; /* 控制容器的垂直滚动 */
+  margin: 20px 0;
+}
+:global{
+  .ant-table {
+    min-height: 520px !important;
+  }
+}
+.button{
+  padding:  0 5px;
+  margin:   5px;
+}
+.flex{
+  display: flex;
 }

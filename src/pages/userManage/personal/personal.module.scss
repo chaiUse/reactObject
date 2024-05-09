@@ -1,0 +1,15 @@
+@import "../../../index.scss";
+.personal {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  background: $whiteBackground;
+  margin: 5px;
+  .userinfo {
+    width: 100%;
+    display: flex;
+    p {
+      width: 190px;
+    }
+  }
+}
