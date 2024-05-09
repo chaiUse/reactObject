@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-
+import { useState } from "react";
 import {
   InboxOutlined,
   TeamOutlined,
@@ -16,9 +16,15 @@ const icon = [
   <FileTextOutlined />,
   <SignatureOutlined />,
 ];
-
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 const List = (props) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const [selectedKeys, setSelectedKeys] = useState([]);
+  const [openKeys, setOpenKeys] = useState([]);
+
   const router = (lt) => {
     const res = lt.list?.map((item, index) => {
       return {
@@ -37,15 +43,25 @@ const List = (props) => {
     return res;
   };
 
+  //监听路由
+  useEffect(() => {
+    console.log(location);
+    const pathname = location.pathname;
+    setSelectedKeys([pathname]);
+  }, [location]);
+
   return (
-    <Menu
+   <div>
+     <Menu
       mode="inline"
-      defaultSelectedKeys={["/userManage", "/userManage/personal"]}
+      selectedKeys={selectedKeys}
+      // defaultOpenKeys={openKeys}
       style={{
         width: 240,
       }}
       items={router(props.list)}
     />
+   </div>
   );
 };
 

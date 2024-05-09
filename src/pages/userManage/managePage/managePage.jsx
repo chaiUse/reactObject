@@ -9,13 +9,13 @@ import {
   Form,
   Input,
   Radio,
-  Pagination,
+  Popconfirm,
 } from "antd";
 
 import style from "./manage.module.scss";
 
 import Table from "../../../components/table/table";
-
+import Search from "../../../components/search/search";
 import {
   getUserListApi,
   delUserApi,
@@ -40,6 +40,7 @@ function managePage() {
     status: 2,
   });
   const [type, setType] = useState("");
+
   //请求列表
   const getlist = (page = "1", pagesize = "10") => {
     getUserListApi(page, pagesize).then((res) => {
@@ -150,6 +151,26 @@ function managePage() {
   useEffect(() => {
     getlist();
   }, []);
+
+  const confirm = (record) => {
+    delUserApi(record._id).then((res) => {
+      console.log(res);
+      if (res.code === 200) {
+        message.open({
+          type: "success",
+          content: res.msg,
+        });
+        getlist();
+      } else {
+        message.open({
+          type: "error",
+          content: res.msg,
+        });
+      }
+    });
+  };
+  const cancel = (e) => {};
+
   //列表配置
   const nlist = [
     {
@@ -199,10 +220,10 @@ function managePage() {
     },
     {
       title: "操作",
-      dataIndex: "creator",
-      key: "11",
+      dataIndex: "",
+      key: "x",
       render: (text, record) => (
-        <div>
+        <div className={style.btn} key={record.username}>
           <Button type="primary" autoInsertSpace={false}>
             分配角色
           </Button>
@@ -213,36 +234,45 @@ function managePage() {
           >
             编辑
           </Button>
-          <Button
-            type="primary"
-            danger
-            autoInsertSpace={false}
-            onClick={() => {
-              delUserApi(record._id).then((res) => {
-                console.log(res);
-                if (res.code === 200) {
-                  message.open({
-                    type: "success",
-                    content: res.msg,
-                  });
-                  getlist();
-                } else {
-                  message.open({
-                    type: "success",
-                    content: res.msg,
-                  });
-                }
-              });
-            }}
+
+          <Popconfirm
+            title="操作"
+            description={`是否删除${record.username}`}
+            onConfirm={() => confirm(record)}
+            onCancel={cancel}
+            okText="确定"
+            cancelText="取消"
           >
-            删除
-          </Button>
+            <Button type="primary" danger autoInsertSpace={false}>
+              删除
+            </Button>
+          </Popconfirm>
         </div>
       ),
     },
   ];
+  //搜索配置
+  const search = [
+    {
+      title: "用户名",
+      key: "username",
+      type: "input",
+    },
+    {
+      title: "id",
+      key: "id",
+      type: "input",
+    },
+  ];
+
+  //搜索更新
+  const getuplist = (s) => {
+    console.log("父组件", s);
+  };
   return (
     <div className={style.manage}>
+      <h3>搜索用户</h3>
+      <Search search={search} getuplist={getuplist} />
       <div>
         <Button type="primary" onClick={() => tab("add")}>
           +添加用户
