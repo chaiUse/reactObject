@@ -1,4 +1,4 @@
-function formatTimestamp(timestamp) {
+function formatTimestamp(timestamp,type=true) {
   if (!timestamp) return "";
   const date = new Date(timestamp);
   const year = date.getFullYear();
@@ -8,7 +8,7 @@ function formatTimestamp(timestamp) {
   const minutes = date.getMinutes().toString().padStart(2, "0");
   const seconds = date.getSeconds().toString().padStart(2, "0");
   console.log(`${year}-${month}-${day} ${hours}:${minutes}:${seconds}`);
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  return type ? `${year}-${month}-${day} ${hours}:${minutes}:${seconds}` : `${year}-${month}-${day}`;
 }
 
 export default formatTimestamp;

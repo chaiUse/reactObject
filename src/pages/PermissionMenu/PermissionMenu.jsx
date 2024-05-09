@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import style from './permissonMenu.module.scss'
 import { createPre, findPre ,updatePre, deletePre } from '../../api/permissionMenu/permissionMenu'
 import { getListApi } from '../../api/user/user'
-
+import formatTimestamp from '../../tool/date'
 const PermissionMenu = () => {
+    //数据
     const[list,setList] = useState([])
     //添加菜单是否展示
     const[show,setShow] = useState(false)
@@ -14,7 +15,71 @@ const PermissionMenu = () => {
     const[curIndex,setCurIndex] = useState(0)
     //切换图片展示隐藏内容
     const[changeIndex,setChangeIndex] = useState(true)
-    //修改图片展示隐藏内容
+    //用于存储正在编辑的元素
+    const[nowPop,setNowPop] = useState([])
+    //存储输入框菜单名称的值
+    const[inputValue1,setInputValue1] = useState("")
+    const[inputValue2,setInputValue2] = useState("")
+    const[inputValue3,setInputValue3] = useState("")
+    //控制输入框显示或者隐藏
+    const[showInput,setShowInput] = useState(false)
+    //检查为空弹错误
+    const[error,setError] = useState('')
+    //点击切换为保存和取消
+    const[isChange,setIsChange] = useState(false)
+    //处理编辑操作
+    const handEdit = (index) => {
+        //显示输入框
+        setShowInput(true),
+        //设置正在编辑的索引
+        setNowPop(pre => [...pre,index])
+        //设置输入框初始值为当前元素的值
+        setInputValue1(list[index].name)
+        setInputValue2(list[index].path)
+        setInputValue3('页面')
+    }
+    //处理保存操作
+    const handSave = (index) => {
+        //查看输入框的值是否为空
+        if(!inputValue1.trim()) {
+            setError('该字段不能为空')
+            return
+        }
+        if(!inputValue2.trim()) {
+            setError('该字段不能为空')
+            return
+        }
+        if(!inputValue3.trim()) {
+            setError('该字段不能为空')
+            return
+        }
+        //结束编辑状态
+        setNowPop(pre => pre.filter(i => i !== index));
+        //隐藏输入框
+        setShowInput(false)
+        //清空错误消息
+        setError('')
+    }
+    //取消操作
+    const handCanle = (index) => {
+        setNowPop(pre => pre.filter(i => i !== index))
+        setShowInput(false)
+        setError('')
+    }
+    //输入框变化
+    const handChange1 = (e) => {
+        setInputValue1(e.target.value)
+        setError('')
+    }
+    const handChange2 = (e) => {
+        setInputValue2(e.target.value)
+        setError('')
+    }
+    const handChange3 = (e) => {
+        setInputValue3(e.target.value)
+        setError('')
+    }
+    //修改加减展示隐藏内容
     const clickList = (index) => {
         setChangeIndex(
             pre => ({
@@ -35,11 +100,19 @@ const PermissionMenu = () => {
         const dele = await deletePre();
         const men = await getListApi();
         console.log(men.data);
-        setList(men.data.list)
         console.log(creat.data);
         console.log(finde.data);
         console.log(updates.data);
         console.log(dele.data);
+        const formatted = men.data.list.map(item => ({
+            ...item,
+            createTime:formatTimestamp(item.createTime,false),
+            children:item.children?.map(items => ({
+                ...items,
+                createTime:formatTimestamp(items.createTime,false)
+            }))
+        }))
+        setList(formatted)
     }
     useEffect(() => {
         getMenu()
@@ -64,16 +137,23 @@ const PermissionMenu = () => {
                     <ul>
                             {list.map((item, index) => 
                                     <li key={index}>
-                                        <div className={style.tops}>
+                                        <div className={`${style.tops} ${nowPop.includes(index) ? style.editing : ''}`}>
                                             <div>
                                                 <button onClick={() => clickList(index)}>{changeIndex[index] ? '-' : '+'}</button>
-                                                {item.name}    
+                                                <span>{item.name}
+                                                {showInput && nowPop.includes(index) && (<input type="text" value={inputValue1} onChange={handChange1} /> )}
+                                                </span>
+                                                 
                                             </div>
-                                            <div>{item.path}</div>
-                                            <div>页面</div>
+                                            <div>{item.path}
+                                            {showInput && nowPop.includes(index) && (<input type="text" value={inputValue2} onChange={handChange2}/>)}
+                                            </div>
+                                            <div>页面
+                                            {showInput && nowPop.includes(index) && (<input type="text" value={inputValue3} onChange={handChange3}/>)}
+                                            </div>
                                             <div>{item.createTime}</div>
                                             <div>
-                                                <span>编辑</span>
+                                                <span onClick={() => handEdit(index)}>编辑</span>
                                                 <span>删除</span>
                                             </div>
                                         </div>

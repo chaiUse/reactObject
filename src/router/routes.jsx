@@ -40,7 +40,7 @@ const routeConfige = [
       { path: "/home/question/create-subject", element: <TestContent/> },
       { path: "/home/question/item-bank", element: <TestKu/> },
       { path: "/home/question/create-item", element: <TestNew/> },
-      { path: "permissionMenu", element: <PermissionMenu /> },
+      { path: "/home/userManage/menuManage", element: <PermissionMenu /> },
     ],
   },
 ];
