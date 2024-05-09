@@ -38,7 +38,8 @@ const List = (props) => {
   };
 
   return (
-    <Menu
+   <div>
+     <Menu
       mode="inline"
       defaultSelectedKeys={["/userManage", "/userManage/personal"]}
       style={{
@@ -46,6 +47,7 @@ const List = (props) => {
       }}
       items={router(props.list)}
     />
+   </div>
   );
 };
 
