@@ -33,7 +33,7 @@ const routeConfige = [
       { path: "/home/room", element: <Room /> },
       { path: "/home/students", element: <Students /> },
       { path: "/home/testBase", element: <TestBase /> },
-      { path: "permissionMenu", element: <PermissionMenu /> },
+      { path: "/home/userManage/menuManage", element: <PermissionMenu /> },
     ],
   },
 ];
