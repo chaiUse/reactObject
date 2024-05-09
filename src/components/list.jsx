@@ -51,7 +51,8 @@ const List = (props) => {
   }, [location]);
 
   return (
-    <Menu
+   <div>
+     <Menu
       mode="inline"
       selectedKeys={selectedKeys}
       // defaultOpenKeys={openKeys}
@@ -60,6 +61,7 @@ const List = (props) => {
       }}
       items={router(props.list)}
     />
+   </div>
   );
 };
 
