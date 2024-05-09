@@ -1,7 +1,7 @@
 // import style from './testContent.module.scss'
+import { useEffect, useState } from 'react';
+import { getTestListApi } from '../../../../../api/testBase/testbaseApi';
 import { EditableProTable, ProFormRadio } from '@ant-design/pro-components';
-import { useState } from 'react';
-// import axios from 'axios';
 
 const TestContent = () => {
   const waitTime = (time = 100) => {
@@ -11,29 +11,28 @@ const TestContent = () => {
       }, time);
     });
   };
-  const defaultData = [
-    {
-      id: 624748504,
-      title: '语文',
-      decs: '中国古诗词',
-      state: 'open',
-      created_at: 1590486176000,
-      update_at: 1590486176000,
-    },
-  ];
+
   const [editableKeys, setEditableRowKeys] = useState([]);
   const [dataSource, setDataSource] = useState([]);
   const [position, setPosition] = useState('bottom');
+   //调用科目列表接口
+  const getTestList = async() => {
+    const ret = await getTestListApi()
+    setDataSource(ret.data.list);
+  }
+  
+  useEffect(()=>{
+    getTestList()
+  },[])
   const columns = [
     {
       title: '学科名称',
-      dataIndex: 'title',
-      tooltip: '只读,使用form.getFieldValue获取不到值',
-      width: '15%'
+      dataIndex: 'name',
+      width: '15%',
     },
     {
       title: '学科内容',
-      dataIndex: 'decs'
+      dataIndex: 'value',
     },
     {
       title: '操作',
@@ -43,7 +42,7 @@ const TestContent = () => {
         <a
           key="editable"
           onClick={() => {
-            action?.startEditable?.(record.id);
+            action?.startEditable?.(record._id);
           }}
         >
           编辑
@@ -54,64 +53,56 @@ const TestContent = () => {
 
   return (
     <>
-      <EditableProTable
-        rowKey="id"
-        headerTitle="学科创建表"
-        maxLength={5}
-        scroll={{
-          x: 960,
-        }}
-        recordCreatorProps={
-          position !== 'hidden'
-            ? {
-                position: position ,
-                record: () => ({ id: (Math.random() * 1000000).toFixed(0) }),
-              }
-            : false
-        }
-        loading={false}
-        toolBarRender={() => [
-          <ProFormRadio.Group
-            key="render"
-            fieldProps={{
-              value: position,
-              onChange: (e) => setPosition(e.target.value),
-            }}
-            options={[
-              {
-                label: '添加到顶部',
-                value: 'top',
-              },
-              {
-                label: '添加到底部',
-                value: 'bottom',
-              },
-              {
-                label: '隐藏',
-                value: 'hidden',
-              },
-            ]}
-          />,
-        ]}
-        columns={columns}
-        request={async () => ({
-          data: defaultData,
-          total: 3,
-          success: true,
-        })}
-        value={dataSource}
-        onChange={setDataSource}
-        editable={{
-          type: 'multiple',
-          editableKeys,
-          onSave: async (rowKey, data, row) => {
-            console.log(rowKey, data, row);
-            await waitTime(2000);
-          },
-          onChange: setEditableRowKeys,
-        }}
-      />
-    </>
+    <EditableProTable
+      rowKey="_id"
+      headerTitle="学科创建表"
+      maxLength={5}
+      scroll={{
+        x: 960,
+      }}
+      recordCreatorProps={{
+        position: position ,
+        // 每次新增的时候需要Key
+        record: () => ({ _id: (Math.random() * 1000000).toFixed(0) }),
+      }}
+      loading={false}
+      toolBarRender={() => [
+        <ProFormRadio.Group
+          key="render"
+          fieldProps={{
+            value: position,
+            onChange: (e) => setPosition(e.target.value),
+          }}
+          options={[
+            {
+              label: '添加到顶部',
+              value: 'top',
+            },
+            {
+              label: '添加到底部',
+              value: 'bottom',
+            },
+            {
+              label: '隐藏',
+              value: 'hidden',
+            },
+          ]}
+        />,
+      ]}
+      columns={columns}
+      value={dataSource}
+      onChange={setDataSource}
+      editable={{
+        type: 'multiple',
+        editableKeys,
+        onSave: async (rowKey, data, row) => {
+          console.log(rowKey, data, row);
+          await waitTime(2000);
+        },
+        onChange: setEditableRowKeys,
+      }}
+    />
+  </>
   );
 };
 

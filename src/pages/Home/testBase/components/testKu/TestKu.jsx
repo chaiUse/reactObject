@@ -1,50 +1,48 @@
 import { useState } from 'react';
 import { Form, Input, Popconfirm, Table, Typography } from 'antd';
+// import { Navigate } from 'react-router';
 
-const originData = [];
-for (let i = 0; i < 50; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `Edward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-  });
-}
-const EditableCell = ({
-  editing,
-  dataIndex,
-  title,
-  inputType,
-  record,
-  index,
-  children,
-  ...restProps
-}) => {
-  const inputNode = inputType === 'number' ? <Input /> : <Input />;
-  return (
-    <td {...restProps}>
-      {editing ? (
-        <Form.Item
-          name={dataIndex}
-          style={{
-            margin: 0,
-          }}
-          rules={[
-            {
-              required: true,
-              message: `Please Input ${title}!`,
-            },
-          ]}
-        >
-          {inputNode}
-        </Form.Item>
-      ) : (
-        children
-      )}
-    </td>
-  );
-};
 const TestKu = () => {
+  const originData = [];
+  for (let i = 0; i < 50; i++) {
+    originData.push({
+      key: i.toString(),
+      name: `Edward ${i}`,
+      age: 32,
+      address: `London Park no. ${i}`,
+    });
+  }
+  const EditableCell = ({
+    editing,
+    dataIndex,
+    title,
+    inputType,
+    record,
+    index,
+    children,
+    ...restProps
+  }) => {
+    return (
+      <td {...restProps}>
+        {editing ? (
+          <Form.Item
+            name={dataIndex}
+            style={{ margin: 0 }}
+            rules={[
+              {
+                required: true,
+                message: `请输入 ${title}!`,
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        ) : (
+          children
+        )}
+      </td>
+    );
+  };
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState('');
@@ -54,6 +52,7 @@ const TestKu = () => {
       name: '',
       age: '',
       address: '',
+      time: '',
       ...record,
     });
     setEditingKey(record.key);
@@ -121,15 +120,15 @@ const TestKu = () => {
                 marginRight: 8,
               }}
             >
-              Save
+              保存
             </Typography.Link>
             <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
+              <a>取消</a>
             </Popconfirm>
           </span>
         ) : (
           <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-            Edit
+            编辑
           </Typography.Link>
         );
       },
@@ -151,22 +150,29 @@ const TestKu = () => {
     };
   });
   return (
-    <Form form={form} component={false}>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        dataSource={data}
-        columns={mergedColumns}
-        rowClassName="editable-row"
-        pagination={{
-          onChange: cancel,
-        }}
-      />
-    </Form>
+    <div className='testKu'>
+      <button>添加试题</button>
+      <div className='testSearch'>
+        试题搜索
+      </div>
+      <Form form={form} component={false}>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          bordered
+          dataSource={data}
+          columns={mergedColumns}
+          rowClassName="editable-row"
+          pagination={{
+            onChange: cancel,
+          }}
+        />
+      </Form>
+    </div>
+    
   );
 };
 export default TestKu;

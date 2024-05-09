@@ -5,10 +5,14 @@ import TestBase from "../pages/Home/testBase/TestBase";
 import Room from "../pages/Home/Room/Room";
 import Students from "../pages/Home/Room/Students";
 import PermissionMenu from "../pages/PermissionMenu/PermissionMenu";
+import ManagePage from "../pages/userManage/managePage/managePage";
+import Personal from "../pages/userManage/personal/personal";
+
 import { lazy } from "react";
 const TestDetail = lazy(() => import("../pages/Home/studentSystem/testDetail"));
 const TestList = lazy(() => import("../pages/Home/studentSystem/testList"));
 const OverTest = lazy(() => import("../pages/Home/studentSystem/overTest"));
+
 const routeConfige = [
   {
     path: "/",
@@ -23,6 +27,9 @@ const routeConfige = [
       { path: "overTest", element: <OverTest /> },
       //照这个写路由
       { path: "/home/userManage/system", element: <RoleManagement /> },
+      { path: "/home/userManage/manage-page", element: <ManagePage /> },
+      { path: "/home/userManage/personal", element: <Personal /> },
+
       { path: "/home/room", element: <Room /> },
       { path: "/home/students", element: <Students /> },
       { path: "/home/testBase", element: <TestBase /> },
