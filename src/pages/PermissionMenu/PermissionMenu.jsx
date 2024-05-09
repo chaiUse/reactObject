@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import style from './permissonMenu.module.scss'
 import { createPre, findPre ,updatePre, deletePre } from '../../api/permissionMenu/permissionMenu'
-import { getListApi } from '../../api/user'
+import { getListApi } from '../../api/user/user'
 
 const PermissionMenu = () => {
     const[list,setList] = useState([])
