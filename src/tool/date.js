@@ -1,4 +1,4 @@
-function formatTimestamp(timestamp) {
+function formatTimestamp(timestamp,type=true) {
   if (!timestamp) return "";
   const date = new Date(timestamp);
   const year = date.getFullYear();

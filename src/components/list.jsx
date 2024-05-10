@@ -51,17 +51,17 @@ const List = (props) => {
   }, [location]);
 
   return (
-    <div>
-      <Menu
-        mode="inline"
-        selectedKeys={selectedKeys}
-        // defaultOpenKeys={openKeys}
-        style={{
-          width: 240,
-        }}
-        items={router(props.list)}
-      />
-    </div>
+   <div style={{height:'100%',overflow:'auto'}}>
+     <Menu
+      mode="inline"
+      selectedKeys={selectedKeys}
+      // defaultOpenKeys={openKeys}
+      style={{
+        width: 240,
+      }}
+      items={router(props.list)}
+    />
+   </div>
   );
 };
 
