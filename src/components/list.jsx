@@ -31,7 +31,7 @@ const List = (props) => {
         key: "/home" + item.path,
         icon: icon[index],
         label: item.name,
-        children: item.children.map((i) => {
+        children: item.children?.map((i) => {
           return {
             key: "/home" + i.path,
             label: i.name,
@@ -51,17 +51,17 @@ const List = (props) => {
   }, [location]);
 
   return (
-   <div>
-     <Menu
-      mode="inline"
-      selectedKeys={selectedKeys}
-      // defaultOpenKeys={openKeys}
-      style={{
-        width: 240,
-      }}
-      items={router(props.list)}
-    />
-   </div>
+    <div>
+      <Menu
+        mode="inline"
+        selectedKeys={selectedKeys}
+        // defaultOpenKeys={openKeys}
+        style={{
+          width: 240,
+        }}
+        items={router(props.list)}
+      />
+    </div>
   );
 };
 

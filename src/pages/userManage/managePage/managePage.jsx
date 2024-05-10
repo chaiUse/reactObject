@@ -10,6 +10,7 @@ import {
   Input,
   Radio,
   Popconfirm,
+  Select,
 } from "antd";
 
 import style from "./manage.module.scss";
@@ -22,6 +23,7 @@ import {
   addUserApi,
   UpdataApi,
 } from "../../../api/user/user";
+import { queryRoleApi } from "../../../api/chai/chia";
 import { useEffect } from "react";
 
 import date from "../../../tool/date";
@@ -41,6 +43,12 @@ function managePage() {
   });
   const [type, setType] = useState("");
 
+  const [show, setShow] = useState(false);
+
+  const [options, setoptions] = useState([]);
+
+
+
   //请求列表
   const getlist = (page = "1", pagesize = "10") => {
     getUserListApi(page, pagesize).then((res) => {
@@ -49,6 +57,20 @@ function managePage() {
       //修改loding
       setLoding(false);
     });
+  };
+
+  const pics = (data) => {
+    console.log(data);
+    setModal(true);
+    queryRoleApi("1", "100").then((res) => {
+      console.log(res.data.list);
+    });
+  };
+
+  //添加角色
+  const handleChange = (value) => {
+    console.log(`添加角色 ${value}`);
+    setoptions([...options, value]);
   };
 
   const tab = (type, data = {}) => {
@@ -66,7 +88,7 @@ function managePage() {
       form.setFieldValue("password", "");
       form.setFieldValue("codepassword", "");
       form.setFieldValue("status", "");
-    }
+    } 
     setModal(true);
   };
   //点击确定
@@ -224,7 +246,11 @@ function managePage() {
       key: "x",
       render: (text, record) => (
         <div className={style.btn} key={record.username}>
-          <Button type="primary" autoInsertSpace={false}>
+          <Button
+            type="primary"
+            autoInsertSpace={false}
+            onClick={() => pics(record)}
+          >
             分配角色
           </Button>
           <Button
@@ -298,6 +324,7 @@ function managePage() {
             }}
             style={{
               maxWidth: 600,
+              display: !show && "none",
             }}
             initialValues={{
               remember: true,
@@ -360,6 +387,31 @@ function managePage() {
                 <Radio value={1}> 启用 </Radio>
               </Radio.Group>
             </Form.Item>
+          </Form>
+          <Form
+            form={form}
+            labelAlign="left"
+            name="basic"
+            labelCol={{
+              span: 8,
+            }}
+            wrapperCol={{
+              span: 16,
+            }}
+            style={{
+              maxWidth: 600,
+              display: show && "none",
+            }}
+          >
+            <Select
+              mode="tags"
+              style={{
+                width: "100%",
+              }}
+              placeholder="Tags Mode"
+              onChange={handleChange}
+              options={options}
+            />
           </Form>
         </Modal>
       </div>
