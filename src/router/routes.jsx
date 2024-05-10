@@ -9,13 +9,10 @@ import Personal from "../pages/userManage/personal/personal";
 
 import { lazy } from "react";
 import TestPaper from '../pages/Home/testpaper/testPaper'
+import Create from '../pages/Home/testpaper/create/Create'
 const TestDetail = lazy(() => import('../pages/Home/studentSystem/testDetail'))
 const TestList = lazy(() => import('../pages/Home/studentSystem/testList'))
 const OverTest = lazy(() => import('../pages/Home/studentSystem/overTest'))
-const routeConfige=[
-const TestDetail = lazy(() => import("../pages/Home/studentSystem/testDetail"));
-const TestList = lazy(() => import("../pages/Home/studentSystem/testList"));
-const OverTest = lazy(() => import("../pages/Home/studentSystem/overTest"));
 
 const routeConfige = [
   {
@@ -37,6 +34,9 @@ const routeConfige = [
       { path: "/home/room", element: <Room /> },
       { path: "/home/students", element: <Students /> },
       { path: "/home/testBase", element: <TestBase /> },
+      { path: "/home/exam/record", element: <TestPaper /> },
+      { path: "/home/exam/create", element: <Create /> },
+      
     ],
   },
 ];
