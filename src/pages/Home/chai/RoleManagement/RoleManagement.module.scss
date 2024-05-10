@@ -25,9 +25,17 @@
 .list {
   height: 600px; /* 设置容器的固定高度 */
   overflow-y: auto; /* 控制容器的垂直滚动 */
+  margin: 20px 0;
 }
 :global{
   .ant-table {
     min-height: 520px !important;
   }
+}
+.button{
+  padding:  0 5px;
+  margin:   5px;
+}
+.flex{
+  display: flex;
 }

@@ -27,3 +27,19 @@ export const delRole = (id) =>{
     ...id,
   })
 }
+//获取权限列表
+
+export const permissionLst = () =>{
+
+  return instance.get('/permission/list')
+}
+
+//编辑角色权限
+export const editRolePermissions = ({id,name,permission}) =>{
+  console.log('编辑角色权限传递数据',id,name,permission);
+  return instance.post('/role/update',{
+    id,
+    name,
+    permission
+  })
+}

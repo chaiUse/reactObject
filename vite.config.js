@@ -1,8 +1,13 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import eslintPlugin from "vite-plugin-eslint";
+import path from "path";
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    // eslintPlugin()
+  ],
   server: {
     proxy: {
       "/exam_api": {
@@ -11,6 +16,11 @@ export default defineConfig({
         // 是否跨域
         changeOrigin: true,
       },
+    },
+  },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
     },
   },
 });
