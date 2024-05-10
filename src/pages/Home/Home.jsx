@@ -98,7 +98,10 @@ const Home = () => {
         </div>
         <div className={style.right}>
           <RightUp />
+          <div className={style.conten}>
+            
           <Outlet />
+          </div>
         </div>
       </div>
     </div>
