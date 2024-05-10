@@ -17,3 +17,14 @@ export const getTestListApi = (page = 1, pageSize = 10) => {
   })
 }
 
+export const getTiKuListApi = (page = 1, pageSize = 2) => {
+  return instance.get('/question/list',{
+    data:{
+      page,
+      pageSize
+    }
+  })
+}
+
+
+

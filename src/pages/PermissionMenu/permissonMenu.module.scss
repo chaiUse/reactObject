@@ -5,6 +5,8 @@
     padding: 2rem;
     .menu{
         background: #FFFFFF;
+        width: 100%;
+        height: auto;
         header{
             width: 100%;
             height: 3rem;
@@ -42,29 +44,78 @@
             ul{
                 li{
                     display: flex;
-                    height: 3rem;
-                    line-height: 3rem;
+                    height: auto;
+                    align-items: center;
                     border-bottom: 1px solid #EBEBEB;
+                    flex-direction: column;position: relative;
                     &:first-child{
                         border-top: 1px solid #EBEBEB;
                     }
                     div{
-                        width: calc(100% / 5);
-                        padding-left: 5px;
-                        &:first-child{
-                            display: flex;
-                            align-items: center;
-                            button{
-                                width: 1.3rem;
-                                height: 1.3rem;
-                                margin-right: 2px;
-                                background: #FFFFFF;
-                                border: 1px solid #EBEBEB;
+                        width: 100%;
+                        height: 50px;
+                        display: flex;
+                        align-items: center;
+                    }
+                    .lis{
+                        width: 100%;
+                        display: flex;
+                        // display: none;
+                        p{
+                            width: calc(100% / 5);
+                            padding-left: 5px;
+                            &:first-child{
+                                padding-left: 30px;
+                            }
+                            span{
+                                margin-left: 8px;
+                                color: #40A9FF;
                             }
                         }
-                        span{
-                            margin-left: 8px;
-                            color: #40A9FF;
+                    }
+                    .tops{
+                        width: 100%;
+                        display: flex;
+                        div{
+                            width: calc(100% / 5);
+                            padding-left: 5px;
+                            position: relative;
+                            input{
+                                width: 90%;
+                                height: 30px;
+                                position: absolute;
+                                left: 0;
+                            }
+                            &:first-child{
+                                display: flex;
+                                align-items: center;
+                                button{
+                                    width: 1.3rem;
+                                    height: 1.3rem;
+                                    margin-right: 2px;
+                                    background: #FFFFFF;
+                                    border: 1px solid hsl(0, 0%, 92%);
+                                }
+                                span{
+                                    flex: 1;
+                                    display: inline-block;
+                                    position: relative;
+                                    color: black;
+                                    display: flex;
+                                    align-items: center;
+                                    input{
+                                    width: 90%;
+                                    height: 30px;
+                                    position: absolute;
+                                    left: 0;
+                                }
+                                }
+                                
+                            }
+                            span{
+                                margin-left: 8px;
+                                color: #40A9FF;
+                            }
                         }
                     }
                 }
@@ -72,7 +123,6 @@
         }
     }
     .addMenu{
-        display: none!important;
         position: absolute;
         right: 0;
         top: 0;
@@ -85,7 +135,7 @@
             color: red;
             font-weight: normal;
         }
-        select,input{
+        input{
             border-radius: 3px;
             height: 2.3rem;
             border-color: #D9D9D9;
@@ -106,8 +156,43 @@
             .menuLevel{
                 display: flex;
                 flex-direction: column;
-                select{
-                    width: 14rem;
+                span{
+                    display: block;
+                    width: 14.1rem;
+                    height: 2.3rem;
+                    border: 1px solid #EBEBEB;
+                    position: relative;
+                    &:hover{
+                        border-color: #40A9FF;
+                    }
+                    svg{
+                        width: 20px;
+                        height: 20px;
+                        position: absolute;
+                        right: 7px;
+                        top: 8px;
+                    }
+                    ul{
+                        width: 100%;
+                        position: absolute;
+                        top: 36px;
+                        left: 0;
+                        z-index: 2;
+                        background: #FFFFFF;
+                        border: 1px solid #EBEBEB;
+                        border-top: 0;
+                        display: flex;
+                        flex-direction: column;
+                        li{
+                            width: 100%;
+                            height: 1.5rem;
+                            line-height: 1.5rem;
+                            padding-left: 5px;
+                            &:hover{
+                                background: #F5F5F5;
+                            }
+                        }
+                    }
                 }
             }
             .menuMiddle{
@@ -197,4 +282,7 @@
             }
         }
     }
+}
+.active1{
+    border-color: #40A9FF;
 }

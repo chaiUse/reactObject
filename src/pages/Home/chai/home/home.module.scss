@@ -1,0 +1,23 @@
+.box{
+  width:calc(100% - 100px);
+  height: 100%;
+  overflow: hidden;
+  text-align: center;
+  line-height: 600px;
+  font-size: 60px;
+  font-style: italic;
+  font-weight: 900;
+  background: linear-gradient(45deg,#5e0dbb 30%,#ff0000 );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  // background: #000;
+  margin: 10px;
+  
+  // font-family: ;
+}
+.con{
+  background: linear-gradient(200deg,#4f3a66, #1c1b1b,);
+  
+  box-shadow: -8px 8px 10px  #776980;
+  margin: 10px 0 0 10px;
+}

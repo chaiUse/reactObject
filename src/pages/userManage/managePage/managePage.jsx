@@ -9,19 +9,21 @@ import {
   Form,
   Input,
   Radio,
-  Pagination,
+  Popconfirm,
+  Select,
 } from "antd";
 
 import style from "./manage.module.scss";
 
 import Table from "../../../components/table/table";
-
+import Search from "../../../components/search/search";
 import {
   getUserListApi,
   delUserApi,
   addUserApi,
   UpdataApi,
 } from "../../../api/user/user";
+import { queryRoleApi } from "../../../api/chai/chia";
 import { useEffect } from "react";
 
 import date from "../../../tool/date";
@@ -40,6 +42,13 @@ function managePage() {
     status: 2,
   });
   const [type, setType] = useState("");
+
+  const [show, setShow] = useState(false);
+
+  const [options, setoptions] = useState([]);
+
+
+
   //请求列表
   const getlist = (page = "1", pagesize = "10") => {
     getUserListApi(page, pagesize).then((res) => {
@@ -48,6 +57,20 @@ function managePage() {
       //修改loding
       setLoding(false);
     });
+  };
+
+  const pics = (data) => {
+    console.log(data);
+    setModal(true);
+    queryRoleApi("1", "100").then((res) => {
+      console.log(res.data.list);
+    });
+  };
+
+  //添加角色
+  const handleChange = (value) => {
+    console.log(`添加角色 ${value}`);
+    setoptions([...options, value]);
   };
 
   const tab = (type, data = {}) => {
@@ -65,7 +88,7 @@ function managePage() {
       form.setFieldValue("password", "");
       form.setFieldValue("codepassword", "");
       form.setFieldValue("status", "");
-    }
+    } 
     setModal(true);
   };
   //点击确定
@@ -150,6 +173,26 @@ function managePage() {
   useEffect(() => {
     getlist();
   }, []);
+
+  const confirm = (record) => {
+    delUserApi(record._id).then((res) => {
+      console.log(res);
+      if (res.code === 200) {
+        message.open({
+          type: "success",
+          content: res.msg,
+        });
+        getlist();
+      } else {
+        message.open({
+          type: "error",
+          content: res.msg,
+        });
+      }
+    });
+  };
+  const cancel = (e) => {};
+
   //列表配置
   const nlist = [
     {
@@ -199,11 +242,15 @@ function managePage() {
     },
     {
       title: "操作",
-      dataIndex: "creator",
-      key: "11",
+      dataIndex: "",
+      key: "x",
       render: (text, record) => (
-        <div>
-          <Button type="primary" autoInsertSpace={false}>
+        <div className={style.btn} key={record.username}>
+          <Button
+            type="primary"
+            autoInsertSpace={false}
+            onClick={() => pics(record)}
+          >
             分配角色
           </Button>
           <Button
@@ -213,36 +260,45 @@ function managePage() {
           >
             编辑
           </Button>
-          <Button
-            type="primary"
-            danger
-            autoInsertSpace={false}
-            onClick={() => {
-              delUserApi(record._id).then((res) => {
-                console.log(res);
-                if (res.code === 200) {
-                  message.open({
-                    type: "success",
-                    content: res.msg,
-                  });
-                  getlist();
-                } else {
-                  message.open({
-                    type: "success",
-                    content: res.msg,
-                  });
-                }
-              });
-            }}
+
+          <Popconfirm
+            title="操作"
+            description={`是否删除${record.username}`}
+            onConfirm={() => confirm(record)}
+            onCancel={cancel}
+            okText="确定"
+            cancelText="取消"
           >
-            删除
-          </Button>
+            <Button type="primary" danger autoInsertSpace={false}>
+              删除
+            </Button>
+          </Popconfirm>
         </div>
       ),
     },
   ];
+  //搜索配置
+  const search = [
+    {
+      title: "用户名",
+      key: "username",
+      type: "input",
+    },
+    {
+      title: "id",
+      key: "id",
+      type: "input",
+    },
+  ];
+
+  //搜索更新
+  const getuplist = (s) => {
+    console.log("父组件", s);
+  };
   return (
     <div className={style.manage}>
+      <h3>搜索用户</h3>
+      <Search search={search} getuplist={getuplist} />
       <div>
         <Button type="primary" onClick={() => tab("add")}>
           +添加用户
@@ -268,6 +324,7 @@ function managePage() {
             }}
             style={{
               maxWidth: 600,
+              display: !show && "none",
             }}
             initialValues={{
               remember: true,
@@ -330,6 +387,31 @@ function managePage() {
                 <Radio value={1}> 启用 </Radio>
               </Radio.Group>
             </Form.Item>
+          </Form>
+          <Form
+            form={form}
+            labelAlign="left"
+            name="basic"
+            labelCol={{
+              span: 8,
+            }}
+            wrapperCol={{
+              span: 16,
+            }}
+            style={{
+              maxWidth: 600,
+              display: show && "none",
+            }}
+          >
+            <Select
+              mode="tags"
+              style={{
+                width: "100%",
+              }}
+              placeholder="Tags Mode"
+              onChange={handleChange}
+              options={options}
+            />
           </Form>
         </Modal>
       </div>

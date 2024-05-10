@@ -1,17 +1,43 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import style from './testKu.module.scss'
 import { Form, Input, Popconfirm, Table, Typography } from 'antd';
 // import { Navigate } from 'react-router';
+import { getTiKuListApi } from '../../../../api/testBases/testbaseApi';
+import TestRight from '../testRight/TestRight';
 
 const TestKu = () => {
-  const originData = [];
-  for (let i = 0; i < 50; i++) {
-    originData.push({
-      key: i.toString(),
-      name: `Edward ${i}`,
-      age: 32,
-      address: `London Park no. ${i}`,
-    });
+  //获取时间函数
+  function a() {
+    const now = new Date();
+    const year = now.getFullYear(); // 获取年份
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // 获取月份，并补零
+    const day = String(now.getDate()).padStart(2, '0'); // 获取日期，并补零
+    const hours = String(now.getHours()).padStart(2, '0'); // 获取小时，并补零
+    const minutes = String(now.getMinutes()).padStart(2, '0'); // 获取分钟，并补零
+    const currentTime = `${year}/${month}/${day}/${hours}:${minutes}`;
+    return currentTime
   }
+  //所有数据
+  const [data, setData] = useState([]);
+  const getTiKu = async() =>{
+    const res = await getTiKuListApi()
+    res.data.list.map(item => {
+      item.time = a()
+    })
+    setData(res.data.list)
+  }
+  useEffect(() => {
+    getTiKu()
+  },[])
+  console.log(data);
+  
+  //点击删除
+  const handleDelete = (_id) => {
+    const newData = data.filter((item) => item._id !== _id);
+    setData(newData);
+    setEditingKey('');
+  };
+
   const EditableCell = ({
     editing,
     dataIndex,
@@ -43,28 +69,30 @@ const TestKu = () => {
       </td>
     );
   };
+
   const [form] = Form.useForm();
-  const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState('');
-  const isEditing = (record) => record.key === editingKey;
+  const isEditing = (record) => record._id === editingKey;
+  console.log(data);
   const edit = (record) => {
     form.setFieldsValue({
-      name: '',
-      age: '',
-      address: '',
+      _id: '',
+      question: '',
+      type: '',
+      classify: '',
       time: '',
       ...record,
     });
-    setEditingKey(record.key);
+    setEditingKey(record._id);
   };
   const cancel = () => {
     setEditingKey('');
   };
-  const save = async (key) => {
+  const save = async (_id) => {
     try {
       const row = await form.validateFields();
       const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
+      const index = newData.findIndex((item) => _id === item._id);
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, {
@@ -85,55 +113,70 @@ const TestKu = () => {
   const columns = [
     {
       title: '试题列表',
-      dataIndex: 'name',
+      dataIndex: 'question',
       width: '25%',
       editable: true,
+      ellipsis: true
     },
     {
       title: '分类',
-      dataIndex: 'age',
-      width: '15%',
+      dataIndex: 'type',
+      width: '12%',
       editable: true,
     },
     {
       title: '题型',
-      dataIndex: 'address',
-      width: '15%',
+      dataIndex: 'classify',
+      width: '12%',
       editable: true,
     },
       {
       title: '创建时间',
       dataIndex: 'time',
-      width: '30%',
+      width: '25%',
       editable: true,
     },
     {
       title: '操作',
       dataIndex: 'operation',
+      align: 'left',
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
           <span>
             <Typography.Link
-              onClick={() => save(record.key)}
+              onClick={() => save(record._id)}
               style={{
                 marginRight: 8,
               }}
             >
               保存
             </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+            <Popconfirm title="确定删除么?" onConfirm={() => handleDelete(record._id)}>
+              <a>删除</a>
+            </Popconfirm>
+            <Popconfirm title="确定取消么?" onConfirm={cancel}>
               <a>取消</a>
             </Popconfirm>
           </span>
-        ) : (
-          <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-            编辑
-          </Typography.Link>
-        );
+          ) : (
+            <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
+            <Typography.Link
+              disabled={editingKey !== ''}
+              onClick={() => edit(record)}
+              style={
+                {background:'#1677ff', color:'#ffffff', padding: '4px 8px', borderRadius: '5px'}
+              }
+            >
+              编辑
+            </Typography.Link>
+            <TestRight />
+            </div>
+          )
       },
     },
   ];
+
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
       return col;
@@ -142,33 +185,30 @@ const TestKu = () => {
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.dataIndex === 'age' ? 'number' : 'text',
+        inputType: 'text',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
+        // editable: col.editable,
       }),
     };
   });
   return (
-    <div className='testKu'>
+    <div className={style.testKu}>
       <button>添加试题</button>
       <div className='testSearch'>
         试题搜索
       </div>
       <Form form={form} component={false}>
         <Table
-          components={{
-            body: {
-              cell: EditableCell,
-            },
-          }}
+          components={{body: { cell: EditableCell } }}
           bordered
           dataSource={data}
           columns={mergedColumns}
-          rowClassName="editable-row"
-          pagination={{
-            onChange: cancel,
-          }}
+          // rowClassName="editable-row"
+          rowClassName={() => 'editable-row'}
+          pagination={{ onChange: cancel }}
+          rowKey="_id"
         />
       </Form>
     </div>
