@@ -12,9 +12,11 @@ import TestNew from "../pages/Home/testBase/testNew/TestNew";
 import { lazy } from "react";
 import Homecon from "../pages/Home/chai/home/home";
 
-const TestDetail = lazy(() => import("../pages/Home/studentSystem/testDetail"));
-const TestList = lazy(() => import("../pages/Home/studentSystem/testList"));
-const OverTest = lazy(() => import("../pages/Home/studentSystem/overTest"));
+import TestPaper from '../pages/Home/testpaper/testPaper'
+import Create from '../pages/Home/testpaper/create/Create'
+const TestDetail = lazy(() => import('../pages/Home/studentSystem/testDetail'))
+const TestList = lazy(() => import('../pages/Home/studentSystem/testList'))
+const OverTest = lazy(() => import('../pages/Home/studentSystem/overTest'))
 
 const routeConfige = [
   {
@@ -41,6 +43,9 @@ const routeConfige = [
       { path: "/home/question/item-bank", element: <TestKu/> },
       { path: "/home/question/create-item", element: <TestNew/> },
       { path: "/home/userManage/menuManage", element: <PermissionMenu /> },
+      { path: "/home/exam/record", element: <TestPaper /> },
+      { path: "/home/exam/create", element: <Create /> },
+      
     ],
   },
 ];
