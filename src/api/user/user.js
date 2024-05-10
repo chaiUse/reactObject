@@ -12,7 +12,6 @@ export const getListApi = () => {
 
 //查询用户列表
 export const getUserListApi = (page, pagesize, search = {}) => {
-  console.log(search);
   return instance.get("/user/list", {
     data: {
       page,

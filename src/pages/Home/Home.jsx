@@ -1,14 +1,14 @@
 // import React from 'react'
 import style from "./Home.module.scss";
 import { Outlet } from "react-router-dom";
-
 import List from "../../components/list";
 import { useEffect, useState } from "react";
 import RightUp from "../../components/rightUp/rightUp";
-
+// import One from '../../components/one'
+import TestPaper from '../../pages/Home/testpaper/testPaper'
 import { Avatar, Dropdown } from "antd";
 
-import { UserOutlined } from "@ant-design/icons";
+import { UnorderedListOutlined, UserOutlined } from "@ant-design/icons";
 
 import { getUserInfoApi, getListApi } from "../../api/user/user";
 
@@ -55,6 +55,7 @@ const Home = () => {
   ];
 
   return (
+    <>
     <div onClick={() => setFlage(false)} className={style.home}>
       <div
         className={`${flage ? style.listShow : style.list}`}
@@ -67,7 +68,6 @@ const Home = () => {
 
       <div className={style.up}>
         <div>
-          图标
           <div
             onClick={(e) => {
               e.stopPropagation();
@@ -75,7 +75,7 @@ const Home = () => {
             }}
             className={style.showIco}
           >
-            666
+            <UnorderedListOutlined />
           </div>
         </div>
 
@@ -100,10 +100,18 @@ const Home = () => {
         </div>
         <div className={style.right}>
           <RightUp />
+          {/* <div className={style.TestPaper}>
+        <TestPaper/>
+        </div> */}
+          <div className={style.conten}>
+            
           <Outlet />
+          </div>
         </div>
+        
       </div>
     </div>
+    </>
   );
 };
 
