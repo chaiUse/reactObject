@@ -20,6 +20,43 @@ export const getTiKuListApi = (page = 1, pageSize = 2) => {
   })
 }
 
+//搜索试题
+export const getSearchQuestionApi = () =>{
+  return instance.get('/question/type/list'),{
+    
+  }  
+}
+
+
+//编辑试题
+export const getEditTestApi = (id, question, type, classify) => {
+  return instance.post('/question/update',{
+    id,
+    question,
+    type,
+    classify,
+  })
+}
+
+//创建试题
+export const getCreateTestPapApi = () => {
+  return instance.post('/question/create',{
+      "question": "1+2等于多少",
+      "type": 1,
+      "classify": "小学一年级",
+      "answer": "3",
+      "options":  ["2", "3", "4", "5"],
+      "desc": "1+2=3"
+  })
+}
+
+//删除试题
+export const getDelTestApi = (id) => {
+  return instance.post('/question/remove',{
+    id,
+  })
+}
+
 //创建科目
 export const getCreateClassApi = (name, value) => {
   return instance.post('/classify/create',{
@@ -42,18 +79,4 @@ export const getDeleteTestApi = (id) => {
     id,
   })
 }
-
-
-//创建试题
-export const getCreateTestPapApi = () => {
-  return instance.post('/question/create',{
-      "question": "1+2等于多少",
-      "type": 1,
-      "classify": "小学一年级",
-      "answer": "3",
-      "options":  ["2", "3", "4", "5"],
-      "desc": "1+2=3"
-  })
-}
-
 
