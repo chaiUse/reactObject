@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import style from './testKu.module.scss'
 import { Form, Input, Popconfirm, Table, Typography } from 'antd';
-// import { Navigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import { getTiKuListApi } from '../../../../api/testBases/testbaseApi';
 import TestRight from '../testRight/TestRight';
 
@@ -121,13 +121,33 @@ const TestKu = () => {
     {
       title: '分类',
       dataIndex: 'type',
-      width: '12%',
+      width: '15%',
       editable: true,
+      render: (text, record) => {
+        let typeLabel = '';
+        switch (record.type) {
+          case '1':
+            typeLabel = '选择题';
+            break;
+          case '2':
+            typeLabel = '多选题';
+            break;
+          case '3':
+            typeLabel = '填空题';
+            break;
+          case '4':
+            typeLabel = '判断题';
+            break;
+          default:
+            typeLabel = '未知题型';
+        }
+        return typeLabel;
+      }
     },
     {
       title: '题型',
       dataIndex: 'classify',
-      width: '12%',
+      width: '15%',
       editable: true,
     },
       {
@@ -195,7 +215,12 @@ const TestKu = () => {
   });
   return (
     <div className={style.testKu}>
-      <button>添加试题</button>
+      <button 
+        style={{
+          width:'100px', height: '30px', background: '#409aff', border: 0 
+        }}>
+        <Link to='/home/question/create-item' style={{color:'#ffffff'}}>添加试题</Link>
+      </button>
       <div className='testSearch'>
         试题搜索
       </div>
