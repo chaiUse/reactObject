@@ -1,158 +1,263 @@
 import { useEffect, useState } from 'react'
 import style from './permissonMenu.module.scss'
-import { createPre, findPre ,updatePre, deletePre } from '../../api/permissionMenu/permissionMenu'
 import { getListApi } from '../../api/user/user'
-
+import { Button,message } from 'antd';
+import {
+  EditableProTable,
+  ProForm,
+  ProFormSelect,
+  ProFormText,
+  DrawerForm,
+  DragSortTable
+} from '@ant-design/pro-components';
+import { PlusOutlined,MenuOutlined } from '@ant-design/icons';
+import moment from 'moment';
 const PermissionMenu = () => {
-    const[list,setList] = useState([])
-    //添加菜单是否展示
-    const[show,setShow] = useState(false)
-    //选择列表是否展开
-    const[showList,setShowList] = useState(false)
-    const[active1,setActive1] = useState(false)
-    //查看当前下标
-    const[curIndex,setCurIndex] = useState(0)
-    //切换图片展示隐藏内容
-    const[changeIndex,setChangeIndex] = useState(true)
-    //修改图片展示隐藏内容
-    const clickList = (index) => {
-        setChangeIndex(
-            pre => ({
-            ...pre,
-            [index]: !pre[index]
-        }))
-    }
-    //点击添加高亮和展示列表
-    const handClick = () => {
-        setShowList(true)
-        setActive1(!active1)
-    }
+    const waitTime = (time = 100) => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(true);
+          }, time);
+        });
+      };
+    const [editableKeys, setEditableRowKeys] = useState([]);
+    const [dataSource, setDataSource] = useState([]);
+    //拖拽排序结束的回调函数
+    const handleDragSortEnd = (beforeIndex,afterIndex,newDataSource) => {
+        console.log('排序后的数据', newDataSource);
+        setDataSource(newDataSource);
+        console.log(newDataSource);
+        message.success('修改列表排序成功');
+      };
     //获取菜单信息
     const getMenu = async() =>{
-        const creat = await createPre();
-        const finde = await findPre();
-        const updates = await updatePre();
-        const dele = await deletePre();
         const men = await getListApi();
         console.log(men.data);
-        setList(men.data.list)
-        console.log(creat.data);
-        console.log(finde.data);
-        console.log(updates.data);
-        console.log(dele.data);
+        const formattedList = men.data.list.map(item => ({
+            ...item,
+            page:'页面',
+            children:item.children?.map(items => ({
+                ...items,
+                page:'页面'
+            }))
+        }))
+        setDataSource(formattedList)
     }
     useEffect(() => {
         getMenu()
     },[])
-    console.log(list);
+    console.log(dataSource);
+    const columns = [
+        {
+            title: '菜单名称',
+            dataIndex: 'name',
+            width: '20%',
+            editable: true,
+            formItemProps: () => {
+                return {
+                  rules: [{ required: true, message: '此项为必填项' }],
+                };
+            },
+        },
+        {
+            title: '菜单路径',
+            dataIndex: 'path',
+            width: '20%',
+            editable: true,
+            formItemProps: () => {
+                return {
+                  rules: [{ required: true, message: '此项为必填项' }],
+                };
+            },
+        },
+        {
+            title: '权限类型',
+            dataIndex: 'page',
+            editable: true,
+            formItemProps: () => {
+                return {
+                  rules: [{ required: true, message: '此项为必填项' }],
+                };
+            },
+        },
+        {
+            title: '创建时间',
+            dataIndex: 'createTime',
+            valueType:'date',
+            editable:false
+        },
+        {
+            title: '操作',
+            dataIndex: 'controls',
+            valueType: 'option',
+            render: (text, record, _, action) => [
+                <a
+                  key="editable"
+                  onClick={() => {
+                    action?.startEditable?.(record._id);
+                  }}
+                >
+                  编辑 
+                </a>,
+                <a
+                key="delete"
+                onClick={() => {
+                  setDataSource(dataSource.filter((item) => item._id !== record._id));
+                }}
+                >
+                    删除
+                </a>,
+            ],
+        },
+
+    ]
+    const dragHandleRender = (rowData, idx) => (
+        <>
+          <MenuOutlined style={{ cursor: 'grab', color: 'gold' }} />
+          &nbsp;{idx + 1} - {rowData.name}
+        </>
+      );
     return(
         <div className={style.box}>
             <div className={style.menu}>
                 
-                <header>
-                    <span>菜单列表 </span>
-                    <p onClick={() => setShow(true)}>+添加菜单</p>
-                </header>
-                <main>
-                    <nav>
-                        <p>菜单名称</p>
-                        <p>菜单路径</p>
-                        <p>权限类型</p>
-                        <p>创建时间</p>
-                        <p>操作</p>
-                    </nav>
-                    <ul>
-                            {list.map((item, index) => 
-                                    <li key={index}>
-                                        <div className={style.tops}>
-                                            <div>
-                                                <button onClick={() => clickList(index)}>{changeIndex[index] ? '-' : '+'}</button>
-                                                {item.name}    
-                                            </div>
-                                            <div>{item.path}</div>
-                                            <div>页面</div>
-                                            <div>{item.createTime}</div>
-                                            <div>
-                                                <span>编辑</span>
-                                                <span>删除</span>
-                                            </div>
-                                        </div>
-                                        {changeIndex[index] && (<>
-                                        {list[curIndex]?.children.map((item,index) =>
-                                        <div key={index} className={style.lis}>
-                                            <p>{item.name}</p>
-                                            <p>{item.path}</p>
-                                            <p>页面</p>
-                                            <p>{item.createTime}</p>
-                                            <p>
-                                                <span>编辑</span>
-                                                <span>删除</span>
-                                            </p>
-                                        </div>
-                                        )}
-                                        </>)}
-                                    </li>
-
-                            )}
-                    </ul>
-                </main>
+                <DragSortTable
+                      rowKey="_id"
+                      headerTitle="菜单列表"
+                      loading={false}
+                      scroll={{x:960}}
+                      value={dataSource}
+                      toolBarRender={() => {
+                        return [
+                          <>
+                            <DrawerForm
+                            title="新建表单"
+                            resize={{
+                            onResize() {
+                                console.log('resize!');
+                            },
+                            maxWidth: window.innerWidth * 0.8,
+                            minWidth: 800,
+                            }}
+                            trigger={
+                                <Button type="primary">
+                                  <PlusOutlined />
+                                  新建表单
+                                </Button>
+                              }
+                              autoFocusFirstInput
+                              drawerProps={{
+                                destroyOnClose: true,
+                              }}
+                              submitTimeout={2000}
+                              onFinish={async (values) => {
+                                values.path = values.name1
+                                values.page = values.select3
+                                values.createTime = moment().format('YYYY-MM-DD')
+                                setDataSource([...dataSource,values])
+                                message.success('提交成功');
+                                // 不返回不会关闭弹框
+                                return true;
+                              }}
+                            >
+                                 <div className={style.body}>
+                            <div style={{display:'flex',flexDirection:'column'}}>
+                                <ProFormSelect
+                                style={{width:'200px'}}
+                                name="select2"
+                                label="选择菜单等级"
+                                showSearch
+                                debounceTime={300}
+                                request={async ({ keyWords }) => {
+                                await waitTime(100);
+                                const processedData = dataSource.map(item => ({
+                                    value:item.value,
+                                    label:item.name
+                                }))
+                                processedData.unshift({
+                                    value:keyWords,
+                                    label:'创建新的一级菜单'
+                                })
+                                return processedData
+                                }}
+                                placeholder="请选择"
+                                rules={[{ required: true, message: '腾达giegie说该项为必填项' }]}
+                                />
+                            </div>
+                            <div style={{display:'flex',justifyContent:'space-between'}}>
+                                <ProForm.Group style={{display:'flex',flexDirection:'column'}}>
+                                    <ProFormText
+                                        style={{width:'200px',display:'flex',flexDirection:'column'}}
+                                        name="name"
+                                        label="菜单名称"
+                                        tooltip="最长为 24 位"
+                                        placeholder="请输入名称"
+                                        rules={[{ required: true, message: '请输入签约客户名称' }]}
+                                    />
+                                </ProForm.Group>
+                                <ProFormSelect
+                                    style={{display:'flex',flexDirection:'column'}}
+                                    name="select"
+                                    label="状态"
+                                    valueEnum={{
+                                    no: '禁用',
+                                    ok: '可用',
+                                    }}
+                                    placeholder="请选择"
+                                    rules={[{ required: true, message: '腾达giegie说该项为必填项' }]}
+                                />
+                                <ProFormSelect
+                                    style={{display:'flex',flexDirection:'column'}}
+                                    name="select3"
+                                    label="权限类型"
+                                    valueEnum={{
+                                    page: '页面',
+                                    button: '按钮',
+                                    }}
+                                    placeholder="请选择"
+                                    rules={[{ required: true, message: '腾达giegie说该项为必填项'}]}
+                                />
+                            </div>
+                            <div>
+                            <ProForm.Group >
+                                    <ProFormText
+                                        style={{display:'flex',flexDirection:'column'}}
+                                        name="name1"
+                                        label="路径"
+                                        tooltip="最长为 18 位"
+                                        placeholder="请输入正确的路径"
+                                        rules={[{ required: true, message: '请输入路径' }]}
+                                    />
+                                </ProForm.Group>
+                            </div>
+                        </div>
+                            </DrawerForm>
+                          </>
+                        ];
+                      }}
+                      columns={columns}
+                      onChange={setDataSource}
+                      editable={{
+                        type:'multiple',
+                        editableKeys,
+                        onSave:async(rowKey,data,row) => {
+                            console.log(rowKey,data,row);
+                            await waitTime(2000)
+                        },
+                        onChange:setEditableRowKeys
+                      }}
+                      recordCreatorProps={false} 
+                      search={false}
+                      pagination={false}
+                      dataSource={dataSource}
+                      dragSortKey="path"
+                      dragSortHandlerRender={dragHandleRender}
+                      onDragSortEnd={handleDragSortEnd}
+                >   
+                </DragSortTable>
+                      
             </div>
-            {show && (<div className={style.box1}>
-                <div className={style.addMenu}>
-                    <div className={style.top}>
-                        <span onClick={() => setShow(false)}>X</span> 添加菜单
-                    </div>
-                    <div className={style.body}>
-                        <div className={style.menuLevel}>
-                            <div><b>*</b> 选择菜单等级</div>
-                            <span className={active1 ? 'active1' : ''} onClick={handClick} >
-                            <svg t="1715140681662" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1327" width="32" height="32"><path d="M512 622.336l311.168-311.168a42.666667 42.666667 0 0 1 60.330667 60.330667l-341.333334 341.333333a42.666667 42.666667 0 0 1-60.330666 0l-341.333334-341.333333a42.666667 42.666667 0 0 1 60.330667-60.330667L512 622.336z" fill="#bfbfbf" p-id="1328"></path></svg>
-                                {showList && (
-                                    <ul>
-                                    <li>创建新的一级菜单</li>
-                                    <li>试题管理</li>
-                                    <li>试卷管理</li>
-                                    <li>考试管理</li>
-                                    <li>系统管理</li>
-                                    <li>班级管理</li>
-                                </ul>
-                                )}
-                            </span>
-                        </div>
-                        <div className={style.menuMiddle}>
-                            <div className={style.menuName}>
-                                <div><b>*</b> 菜单名字 <span>?</span></div>
-                                <input type="text" placeholder='请输入名称'/>
-                            </div>
-                            <div className={style.hover}>
-                                <div><b>*</b> 状态</div>
-                                <select name="" id="">
-                                    <option value="">禁用</option>
-                                    <option value="">可用</option>
-                                </select>
-                            </div>
-                            <div className={style.permissionMenuType}>
-                                <div><b>*</b> 权限类型</div>
-                                <select name="" id="">
-                                    <option value="">页面</option>
-                                    <option value="">按钮</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div className={style.naviga}>
-                            <div><b>*</b> 路径<p>?</p></div>
-                            <input type="text" placeholder='请输入正确的路径' />
-                        </div>
-                    </div>
-                    <div className={style.foot}>
-                        <p onClick={() => setShow(false)}>取消</p>
-                        <p>确定</p>
-                    </div>
-                </div>
-            </div>
-        )}
         </div>
     )
 }
-
 export default PermissionMenu

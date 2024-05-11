@@ -10,6 +10,7 @@ import {
   Input,
   Radio,
   Popconfirm,
+  Select,
 } from "antd";
 
 import style from "./manage.module.scss";
@@ -22,6 +23,7 @@ import {
   addUserApi,
   UpdataApi,
 } from "../../../api/user/user";
+import { queryRoleApi } from "../../../api/chai/chia";
 import { useEffect } from "react";
 
 import date from "../../../tool/date";
@@ -41,6 +43,10 @@ function managePage() {
   });
   const [type, setType] = useState("");
 
+  const [show, setShow] = useState(false);
+
+  const [options, setoptions] = useState([]);
+  const [val, setval] = useState([]);
   //请求列表
   const getlist = (page = "1", pagesize = "10") => {
     getUserListApi(page, pagesize).then((res) => {
@@ -51,9 +57,47 @@ function managePage() {
     });
   };
 
+  //请求角色列表
+  const getRole = () => {
+    queryRoleApi("1", "20").then((res) => {
+      setoptions(
+        res.data.list.map((item) => {
+          return {
+            value: item.name,
+          };
+        })
+      );
+    });
+  };
+  const pics = (data) => {
+    console.log(data);
+    setval(data.role);
+    setModal(true);
+    setShow(false);
+    form.setFieldValue("id", data._id);
+    setBase({
+      ...base,
+      title: "分配角色",
+    });
+    queryRoleApi("1", "100").then((res) => {
+      console.log(res.data.list);
+    });
+  };
+
+  //添加角色
+  const handleChange = (value) => {
+    console.log(`添加角色 ${value}`);
+    setval(value);
+  };
+
   const tab = (type, data = {}) => {
+    setShow(true);
     if (type === "edit") {
       setType("edit");
+      setBase({
+        ...base,
+        title: "编辑角色",
+      });
       form.setFieldValue("username", data.username);
       form.setFieldValue("password", data.password);
       form.setFieldValue("codepassword", data.password);
@@ -61,16 +105,37 @@ function managePage() {
       form.setFieldValue("id", data._id);
     } else {
       setType("add");
-      // 添加用户时，将表单数据设置为空值或默认值
-      form.setFieldValue("username", "");
-      form.setFieldValue("password", "");
-      form.setFieldValue("codepassword", "");
-      form.setFieldValue("status", "");
+      setBase({
+        ...base,
+        title: "新建用户",
+      });
+      form.resetFields();
     }
     setModal(true);
   };
   //点击确定
   const handleOk = () => {
+    //分配角色
+    if (!show) {
+      console.log(form.getFieldValue("id"));
+      UpdataApi(form.getFieldValue("id"), { role: val }).then((res) => {
+        console.log(res);
+        if (res.code === 200) {
+          message.open({
+            type: "success",
+            content: `分配角色${res.msg}`,
+          });
+        } else {
+          message.open({
+            type: "error",
+            content: `分配角色${res.msg}`,
+          });
+        }
+      });
+      getlist();
+      setModal(false);
+      return;
+    }
     if (form.getFieldValue("password") === form.getFieldValue("codepassword")) {
       const data = {
         username: form.getFieldValue("username"),
@@ -150,6 +215,7 @@ function managePage() {
   //初始化
   useEffect(() => {
     getlist();
+    getRole();
   }, []);
 
   const confirm = (record) => {
@@ -224,7 +290,11 @@ function managePage() {
       key: "x",
       render: (text, record) => (
         <div className={style.btn} key={record.username}>
-          <Button type="primary" autoInsertSpace={false}>
+          <Button
+            type="primary"
+            autoInsertSpace={false}
+            onClick={() => pics(record)}
+          >
             分配角色
           </Button>
           <Button
@@ -298,13 +368,14 @@ function managePage() {
             }}
             style={{
               maxWidth: 600,
+              display: !show && "none",
             }}
             initialValues={{
               remember: true,
-              username: base.username,
-              password: base.password,
-              codepassword: base.password,
-              status: base.status,
+              // username: base.username,
+              // password: base.password,
+              // codepassword: base.password,
+              // status: base.status,
             }}
             autoComplete="off"
           >
@@ -360,6 +431,32 @@ function managePage() {
                 <Radio value={1}> 启用 </Radio>
               </Radio.Group>
             </Form.Item>
+          </Form>
+          <Form
+            form={form}
+            labelAlign="left"
+            name="basic"
+            labelCol={{
+              span: 8,
+            }}
+            wrapperCol={{
+              span: 16,
+            }}
+            style={{
+              maxWidth: 600,
+              display: show && "none",
+            }}
+          >
+            <Select
+              mode="tags"
+              style={{
+                width: "100%",
+              }}
+              placeholder="请分配角色"
+              onChange={handleChange}
+              options={options}
+              value={val}
+            />
           </Form>
         </Modal>
       </div>

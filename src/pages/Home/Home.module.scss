@@ -11,20 +11,27 @@ $up_height: 100px;
   height: $up_height;
   display: flex;
   justify-content: space-between;
-  padding: 0 30px;
-  background: #000;
+  // padding: 0 30px;
+  // background: #000;
+  background-image: url(http://p1.music.126.net/o3m413wu0IE6MMDHaPBbUA==/109951166102809451.jpg?param=130y130);
+  background-repeat: no-repeat;
+  background-size: 100% 200%;
   color: #fff;
 }
 .box {
   display: flex;
   height: calc(100% - $up_height);
+  width: calc(100% - 20px);
   overflow: hidden;
   .left {
     width: 300px;
     height: 100%;
+    box-shadow: 1px 1px 10px  #776980;
   }
   .right {
     flex: 1;
+    box-shadow: 1px 1px 10px  #776980;
+    padding: 10px;
   }
 }
 .list {
@@ -36,24 +43,36 @@ $up_height: 100px;
 .listShow {
   position: fixed;
   height: 100%;
-  width: 100px;
-  background: $grayBackground;
+  width: 232px;
+  background: $whiteBackground;
+  box-shadow: 1px 1px 10px  #776980;
   z-index: 9;
 }
+img{
+  width: 400px;
+  height: 100px;
+}
+.conten{
+  
+  height: 100%;
+  // width: 40%;
+  overflow: auto;
+  padding: 0 0 200px;
+}
 /* 媒体查询 */
-// @media screen and (max-width: 1200px) {
-//   .box{
-//     .left{
-//       display: none;
-//     }
-//   }
-//   .showIco{
-//     display: block;
-//   }
-// }
+@media screen and (max-width: 1200px) {
+  .box{
+    .left{
+      display: none;
+    }
+  }
+  .showIco{
+    display: block;
+  }
+}
 
-// @media screen and (max-width: 480px) {
-//   .item {
-//     width: 100%;
-//   }
-// }
+@media screen and (max-width: 480px) {
+  .item {
+    width: 100%;
+  }
+}

@@ -51,7 +51,7 @@ const List = (props) => {
   }, [location]);
 
   return (
-   <div>
+   <div style={{height:'100%',overflow:'auto'}}>
      <Menu
       mode="inline"
       selectedKeys={selectedKeys}
