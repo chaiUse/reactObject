@@ -36,10 +36,6 @@ function managePage() {
   const [isModal, setModal] = useState(false);
   const [base, setBase] = useState({
     title: "新建用户",
-    username: "",
-    password: "",
-    codepassword: "",
-    status: 2,
   });
   const [type, setType] = useState("");
 
@@ -70,7 +66,6 @@ function managePage() {
     });
   };
   const pics = (data) => {
-    console.log(data);
     setval(data.role);
     setModal(true);
     setShow(false);
@@ -79,14 +74,10 @@ function managePage() {
       ...base,
       title: "分配角色",
     });
-    queryRoleApi("1", "100").then((res) => {
-      console.log(res.data.list);
-    });
   };
 
   //添加角色
   const handleChange = (value) => {
-    console.log(`添加角色 ${value}`);
     setval(value);
   };
 
@@ -117,9 +108,7 @@ function managePage() {
   const handleOk = () => {
     //分配角色
     if (!show) {
-      console.log(form.getFieldValue("id"));
       UpdataApi(form.getFieldValue("id"), { role: val }).then((res) => {
-        console.log(res);
         if (res.code === 200) {
           message.open({
             type: "success",
@@ -145,7 +134,6 @@ function managePage() {
       if (type === "add") {
         //添加
         addUserApi(data).then((res) => {
-          console.log(res);
           if (res.code === 200) {
             message.open({
               type: "success",
@@ -192,12 +180,10 @@ function managePage() {
 
   //开关
   const onChange = (data) => {
-    console.log(data);
     const obj = {
       status: data.status ? 0 : 1,
     };
     UpdataApi(data._id, obj).then((res) => {
-      console.log(res);
       if (res.code === 200) {
         message.open({
           type: "success",
@@ -220,7 +206,6 @@ function managePage() {
 
   const confirm = (record) => {
     delUserApi(record._id).then((res) => {
-      console.log(res);
       if (res.code === 200) {
         message.open({
           type: "success",
@@ -336,9 +321,7 @@ function managePage() {
   ];
 
   //搜索更新
-  const getuplist = (s) => {
-    console.log("父组件", s);
-  };
+  const getuplist = (s) => {};
   return (
     <div className={style.manage}>
       <h3>搜索用户</h3>
