@@ -8,8 +8,9 @@ import {
   ProFormSelect,
   ProFormText,
   DrawerForm,
+  DragSortTable
 } from '@ant-design/pro-components';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined,MenuOutlined } from '@ant-design/icons';
 import moment from 'moment';
 const PermissionMenu = () => {
     const waitTime = (time = 100) => {
@@ -21,6 +22,13 @@ const PermissionMenu = () => {
       };
     const [editableKeys, setEditableRowKeys] = useState([]);
     const [dataSource, setDataSource] = useState([]);
+    //拖拽排序结束的回调函数
+    const handleDragSortEnd = (beforeIndex,afterIndex,newDataSource) => {
+        console.log('排序后的数据', newDataSource);
+        setDataSource(newDataSource);
+        console.log(newDataSource);
+        message.success('修改列表排序成功');
+      };
     //获取菜单信息
     const getMenu = async() =>{
         const men = await getListApi();
@@ -38,6 +46,7 @@ const PermissionMenu = () => {
     useEffect(() => {
         getMenu()
     },[])
+    console.log(dataSource);
     const columns = [
         {
             title: '菜单名称',
@@ -102,10 +111,17 @@ const PermissionMenu = () => {
         },
 
     ]
+    const dragHandleRender = (rowData, idx) => (
+        <>
+          <MenuOutlined style={{ cursor: 'grab', color: 'gold' }} />
+          &nbsp;{idx + 1} - {rowData.name}
+        </>
+      );
     return(
         <div className={style.box}>
             <div className={style.menu}>
-                <EditableProTable
+                
+                <DragSortTable
                       rowKey="_id"
                       headerTitle="菜单列表"
                       loading={false}
@@ -231,9 +247,15 @@ const PermissionMenu = () => {
                         onChange:setEditableRowKeys
                       }}
                       recordCreatorProps={false} 
-                >
-                </EditableProTable>
-                
+                      search={false}
+                      pagination={false}
+                      dataSource={dataSource}
+                      dragSortKey="path"
+                      dragSortHandlerRender={dragHandleRender}
+                      onDragSortEnd={handleDragSortEnd}
+                >   
+                </DragSortTable>
+                      
             </div>
         </div>
     )
