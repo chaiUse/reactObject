@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 const RightUp = () => {
   const loscation = useLocation()
-  console.log(location);
+  // console.log(location);
 
 
 
@@ -16,7 +16,7 @@ const RightUp = () => {
 
   const permissionData = async () => {
     const res = await permissionLst()
-    console.log('获取权限数据', res.data.list);
+    // console.log('获取权限数据', res.data.list);
     let Aindex = [{title:'首页'}]
 
     const fn = (arr, parentIndex, bl, num) => {
@@ -25,20 +25,20 @@ const RightUp = () => {
 
         if (!bl) {
           num = 1
-          console.log('初始化');
+          // console.log('初始化');
         }
         parentIndex[num] =  {
           title: item.name,
           // href: '#/home' + item.path,
         }
 
-        console.log(item, index, parentIndex,num);
+        // console.log(item, index, parentIndex,num);
         if (location.hash === '#/home' + item.path) {
-          console.log(3333, parentIndex, item);
+          // console.log(3333, parentIndex, item);
           Aindex = [...parentIndex]
         }
         if (item.children) {
-          console.log(parentIndex);
+          // console.log(parentIndex);
           return {
             title: item.name,
             href: '#/home' + item.path,
@@ -58,7 +58,7 @@ const RightUp = () => {
 
   }
   useEffect(() => {
-    console.log(items);
+    // console.log(items);
   }, [items])
   useEffect(() => {
     permissionData()

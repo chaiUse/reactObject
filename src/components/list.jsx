@@ -45,7 +45,7 @@ const List = (props) => {
 
   //监听路由
   useEffect(() => {
-    console.log(location);
+    // console.log(location);
     const pathname = location.pathname;
     setSelectedKeys([pathname]);
   }, [location]);
