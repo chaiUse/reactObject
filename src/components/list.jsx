@@ -23,7 +23,7 @@ const List = (props) => {
   const location = useLocation();
 
   const [selectedKeys, setSelectedKeys] = useState([]);
-  const [openKeys, setOpenKeys] = useState([]);
+  const [openKeys, setOpenKeys] = useState(["/userManage"]);
 
   const router = (lt) => {
     const res = lt.list?.map((item, index) => {
@@ -48,20 +48,23 @@ const List = (props) => {
     // console.log(location);
     const pathname = location.pathname;
     setSelectedKeys([pathname]);
+    console.log(pathname);
   }, [location]);
 
   return (
-   <div style={{height:'100%',overflow:'auto'}}>
-     <Menu
-      mode="inline"
-      selectedKeys={selectedKeys}
-      // defaultOpenKeys={openKeys}
-      style={{
-        width: 240,
-      }}
-      items={router(props.list)}
-    />
-   </div>
+    <div style={{ height: "100%", overflow: "auto" }}>
+      <Menu
+        mode="inline"
+        selectedKeys={selectedKeys}
+        defaultOpenKeys={openKeys}
+        style={{
+          width: 240,
+        }}
+        items={router(props.list)}
+        onOpenChange={(openKeys) => setOpenKeys(openKeys)}
+        openKeys={openKeys}
+      />
+    </div>
   );
 };
 

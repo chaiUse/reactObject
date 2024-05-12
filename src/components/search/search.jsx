@@ -81,6 +81,7 @@ function Search(props) {
             <a
               style={{
                 fontSize: 12,
+                display: expand ? "block" : "none",
               }}
               onClick={() => {
                 props.search.lenght > 3 && setExpand(!expand);
