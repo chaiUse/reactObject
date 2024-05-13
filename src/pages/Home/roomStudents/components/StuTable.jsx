@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Form, Input,Select, Popconfirm, Table, Typography } from 'antd';
-import {roomSearchApi,roomEditApi,roomDelApi} from '../../../../api/classroom/classroom'
-import { useContext } from 'react';
-import { DataContext } from '../data/DataContext';
+import {stuSearchApi,stuEditApi,stuDelApi} from '../../../../api/classroom/classroom'
+// import { useContext } from 'react';
+// import { DataContext } from '../data/DataContext';
 
 
-const RoomTable = () => {
+const StuTable = () => {
   const { Option } = Select;
   const EditableCell = ({
     editing,
@@ -20,9 +20,8 @@ const RoomTable = () => {
     const inputNode = inputType === 'number' ? <Select
         showSearch// 启用搜索功能
         placeholder="请选择或输入">
-          {teacherList.map(item=>(
-             <Option value={item} key={item}>{item}</Option>
-          ))}
+             <Option value='男' >男</Option>
+             <Option value='女' >女</Option>
       </Select> :inputType === 'select' ? 
        <Select
        placeholder="请选择或输入">
@@ -36,7 +35,7 @@ const RoomTable = () => {
       <td {...restProps}>
         {editing ? (
           <Form.Item
-            name={dataIndex}
+            name = {dataIndex}
             style={{
               margin: 0,
             }}
@@ -57,35 +56,37 @@ const RoomTable = () => {
   };
 
   const [form] = Form.useForm();
-  const { data, setData } = useContext(DataContext)
-  // const [data, setData] = useState([]);// 班级列表的状态
+  // const { data, setData } = useContext(DataContext)
+  const [data, setData] = useState([]);// 班级列表的状态
   const [editingKey, setEditingKey] = useState('');//编辑状态
-  const [ teacherList, setTeacherList ] = useState([])//老师选项
-  const [ classList, setClassList ] = useState([])//科目类别选项
+  // const [ teacherList, setTeacherList ] = useState([])//老师选项
+  const [ classList, setClassList ] = useState([])//班级选项
 
-  const b = async()=>{
-    const res = await roomSearchApi()
+  const g = async()=>{
+    const res = await stuSearchApi()
     res.data.list.map((item,index)=>{
       item.num = index+1,
       item.key = index
     })
     setData(res.data.list)
-    // 老师选项
-    setTeacherList([...new Set(res.data.list.map(item => item.teacher))])
-    // 科目类别选项
-    setClassList([...new Set(res.data.list.map(item => item.classify))])
+    // console.log(11111,res.data.list)
+    // // 老师选项
+    // setTeacherList([...new Set(res.data.list.map(item => item.teacher))])
+    // // 科目类别选项
+    setClassList([...new Set(res.data.list.map(item => item.className))])
   }
   useEffect(()=>{
-    b()
+    g()
   },[])
 
   const isEditing = (record) => record.key === editingKey;
   const edit = (record) => {
     form.setFieldsValue({
       num:'',
-      name: '',
-      teacher: '',
-      classify: '',
+      username: '',
+      sex: '',
+      age: '',
+      className:'',
       ...record,
     });
     setEditingKey(record.key);
@@ -93,12 +94,13 @@ const RoomTable = () => {
   const cancel = () => {
     setEditingKey('');
   };
-  const save = async (key) => {
+  const save = async(key) => {
     try {
       const row = await form.validateFields();
       // const newData = [...data];
       const index = data.findIndex((item) => key === item.key);
-      const resEdit = await roomEditApi(row.name,data[index]._id,row.teacher,row.classify)
+      // console.log(2222233333,row.username,data[index]._id,row.sex,row.age,row.className)
+      const resEdit = await stuEditApi(row.username,data[index]._id,row.sex,Number(row.age),row.className)
       if(resEdit.code === 200){
         // if (index > -1) {
         //   const item = newData[index];
@@ -107,7 +109,7 @@ const RoomTable = () => {
         //     ...row,
         //   });
         //   setData(newData);
-        b()
+        g()
         setEditingKey('');
   
         // } else {
@@ -127,9 +129,9 @@ const RoomTable = () => {
     }
     // const newData = data.filter((item) => item.key !== key);
     const index = data.findIndex((item) => key === item.key);
-    const resDel = await roomDelApi(data[index]._id)
+    const resDel = await stuDelApi(data[index]._id)
     console.log( '111222',resDel)
-    b()
+    g()
     // setData(newData);
   };
   const columns = [
@@ -140,27 +142,33 @@ const RoomTable = () => {
       editable: false,
     },
     {
-      title: '班级名称',
-      dataIndex: 'name',
-      width: '20%',
-      editable: true,
-    },
-    {
-      title: '老师',
-      dataIndex: 'teacher',
+      title: '姓名',
+      dataIndex: 'username',
       width: '15%',
       editable: true,
     },
     {
-      title: '科目类别',
-      dataIndex: 'classify',
+      title: '性别',
+      dataIndex: 'sex',
+      width: '15%',
+      editable: true,
+    },
+    {
+      title: '年龄',
+      dataIndex: 'age',
+      width: '15%',
+      editable: true,
+    },
+    {
+      title: '班级',
+      dataIndex: 'className',
       width: '20%',
       editable: true,
     },
     {
       title: '创建时间',
       dataIndex: 'createTime',
-      width: '20',
+      width: '15%',
       editable: false,
     },
     {
@@ -201,7 +209,7 @@ const RoomTable = () => {
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.dataIndex === 'teacher' ? 'number' : col.dataIndex === 'classify'? 'select':'text',
+        inputType: col.dataIndex === 'sex' ? 'number' : col.dataIndex === 'className'? 'select':'text',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
@@ -227,4 +235,6 @@ const RoomTable = () => {
     </Form>
   );
 };
-export default RoomTable;
+
+export default StuTable
+
