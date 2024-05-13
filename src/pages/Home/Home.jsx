@@ -1,11 +1,10 @@
 // import React from 'react'
 import style from "./Home.module.scss";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import List from "../../components/list";
 import { useEffect, useState } from "react";
 import RightUp from "../../components/rightUp/rightUp";
-// import One from '../../components/one'
-import TestPaper from '../../pages/Home/testpaper/testPaper'
+
 import { Avatar, Dropdown } from "antd";
 
 import { UnorderedListOutlined, UserOutlined } from "@ant-design/icons";
@@ -13,6 +12,8 @@ import { UnorderedListOutlined, UserOutlined } from "@ant-design/icons";
 import { getUserInfoApi, getListApi } from "../../api/user/user";
 
 const Home = () => {
+  const navigator = useNavigate();
+
   const [flage, setFlage] = useState(false);
 
   //用户信息
@@ -47,15 +48,19 @@ const Home = () => {
     {
       key: "2",
       label: (
-        <a target="_blank" rel="noopener noreferrer">
+        <p
+          onClick={() => {
+            localStorage.removeItem("token");
+            navigator("/");
+          }}
+        >
           退出登录
-        </a>
+        </p>
       ),
     },
   ];
 
   return (
-    <>
     <div onClick={() => setFlage(false)} className={style.home}>
       <div
         className={`${flage ? style.listShow : style.list}`}
@@ -75,7 +80,7 @@ const Home = () => {
             }}
             className={style.showIco}
           >
-            <UnorderedListOutlined />
+            <UnorderedListOutlined style={{fontSize:'30px',background:'rgba(184, 121, 155,1)'}}/>
           </div>
         </div>
 
@@ -100,18 +105,12 @@ const Home = () => {
         </div>
         <div className={style.right}>
           <RightUp />
-          {/* <div className={style.TestPaper}>
-        <TestPaper/>
-        </div> */}
           <div className={style.conten}>
-            
-          <Outlet />
+            <Outlet />
           </div>
         </div>
-        
       </div>
     </div>
-    </>
   );
 };
 

@@ -1,6 +1,8 @@
 // import React from 'react'
 import style from './RoleManagement.module.scss'
 import { useEffect, useState } from 'react';
+import dayjs from 'dayjs'
+import AdvancedFormat from 'dayjs/plugin/advancedFormat' 
 
 import { queryRoleApi, createRole, delRole, permissionLst, editRolePermissions } from '@/api/chai/chia';
 
@@ -8,6 +10,7 @@ import { PlusCircleOutlined } from '@ant-design/icons';
 
 import { Popconfirm, Drawer, Button, Table, Pagination, Modal, Form, Input, Select, Space, message, Tree, Flex } from "antd";
 const RoleManagement = () => {
+  dayjs.extend(AdvancedFormat)
   //#region 全局提示数据
   const [messageApi, contextHolder] = message.useMessage();
   const success = () => {
@@ -90,7 +93,7 @@ const RoleManagement = () => {
       a.key = b + 1 + ''
     })
     setDataSource(() => {
-      console.log('修改数据', res.data.list);
+      // console.log('修改数据', res.data.list);
       return res.data.list
     })
   }
@@ -114,6 +117,13 @@ const RoleManagement = () => {
       title: '创建时间',
       dataIndex: 'createTime',
       key: 'createTime',
+      render : (text, record, index)=>{
+        return( 
+        <div>
+          {dayjs(text).format('YYYY/MM/DD hh:mm:ss')}
+        </div>
+        )
+      }
     },
     {
       title: '操作',
@@ -260,6 +270,9 @@ const RoleManagement = () => {
 
   //#endregion
 
+
+  console.log('dayjs:',dayjs(1715254620607).format('YYYY/MM/DD hh:mm:ss'));
+  console.log('dayjs:',dayjs(1715254620607));
   useEffect(() => {
     getDate()
     permissionData()

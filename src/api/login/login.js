@@ -17,3 +17,11 @@ export const getUPApi = (data) => {
     timestamp,
   });
 };
+
+//退出
+export const blackApi = (data) => {
+  console.log(data);
+  return instance.post("/user/logout", {
+    ...data,
+  });
+};

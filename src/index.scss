@@ -1,14 +1,14 @@
 // 背景色-白
 
-$whiteBackground:#ffffff;
+$whiteBackground: #ffffff;
 // 灰色背景
-$grayBackground:#f0f2f5;
+$grayBackground: #f0f2f5;
 // 蓝色背景
-$blueBackground:#1890ff;
+$blueBackground: #1890ff;
 // 红色背景
-$redBackground:#ff4d4f;
+$redBackground: #ff4d4f;
 // 黑色背景
-$blackBackground:#001529;
+$blackBackground: #001529;
 
 * {
   padding: 0;
@@ -28,4 +28,8 @@ body,
 
 img {
   display: block;
+}
+
+tr {
+  transition: transform 0.8s ease; /* 添加一个简单的 transform 过渡效果 */
 }
