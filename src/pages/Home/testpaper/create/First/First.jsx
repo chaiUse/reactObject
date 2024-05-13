@@ -1,52 +1,18 @@
-import React, { useState } from 'react';
+
+import  { useState,useEffect } from 'react';
+import instance from '../../../../../api/api'
 import {
-  AutoComplete,
   Button,
-  Cascader,
   Checkbox,
   Col,
   Form,
   Input,
-  InputNumber,
   Row,
   Select,
 } from 'antd';
 const { Option } = Select;
 
-const residences = [
-    {
-      value: 'zhejiang',
-      label: 'Zhejiang',
-      children: [
-        {
-          value: 'hangzhou',
-          label: 'Hangzhou',
-          children: [
-            {
-              value: 'xihu',
-              label: 'West Lake',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      value: 'jiangsu',
-      label: 'Jiangsu',
-      children: [
-        {
-          value: 'nanjing',
-          label: 'Nanjing',
-          children: [
-            {
-              value: 'zhonghuamen',
-              label: 'Zhong Hua Men',
-            },
-          ],
-        },
-      ],
-    },
-  ];
+
   const formItemLayout = {
     labelCol: {
       xs: {
@@ -77,11 +43,49 @@ const residences = [
       },
     },
   };
-function First() {
+
+
+function First({ next }) {
+ 
+ 
     const [form] = Form.useForm();
     const onFinish = (values) => {
-    console.log('Received values of form: ', values);
+        const data = {
+          name: values.nickname,
+          classify: values.class,
+          examId:  "64425a108784673370bb54aa",
+          group: values.subjects,
+          examiner: values.invigilation,
+          startTime: "2222",
+          endTime: "33333333"
+        }
+    console.log(data);
+    console.log(values);
+    next(data);
+    
   };
+  const [First, setFirst] = useState([]); // 初始化 list 状态
+  // const [data, setdata] = useState([]); // 初始化 list 状态
+  const fetchTestPapers = async () => {
+    try {
+      const res = await instance.get("/classify/list?page=1&pagesize=2");
+      
+      setFirst(res?.data.list); // 更新状态
+
+    } catch (error) {
+      console.error("Failed to fetch test papers: 请求失败 ", error);
+    }
+    
+  };
+ useEffect(()=>{
+  fetchTestPapers()
+ },[])
+ useEffect(()=>{
+  First
+  // console.log(First);
+ },[First])
+  
+
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select
@@ -94,30 +98,7 @@ function First() {
       </Select>
     </Form.Item>
   );
-  const suffixSelector = (
-    <Form.Item name="suffix" noStyle>
-      <Select
-        style={{
-          width: 70,
-        }}
-      >
-        <Option value="USD">$</Option>
-        <Option value="CNY">¥</Option>
-      </Select>
-    </Form.Item>
-  );
-  const [autoCompleteResult, setAutoCompleteResult] = useState([]);
-  const onWebsiteChange = (value) => {
-    if (!value) {
-      setAutoCompleteResult([]);
-    } else {
-      setAutoCompleteResult(['.com', '.org', '.net'].map((domain) => `${value}${domain}`));
-    }
-  };
-  const websiteOptions = autoCompleteResult.map((website) => ({
-    label: website,
-    value: website,
-  }));
+
 
   return (
     <Form
@@ -125,10 +106,7 @@ function First() {
     form={form}
     name="register"
     onFinish={onFinish}
-    initialValues={{
-      residence: ['zhejiang', 'hangzhou', 'xihu'],
-      prefix: '86',
-    }}
+    
     style={{
       maxWidth: 600,
     }}
@@ -146,7 +124,7 @@ function First() {
       rules={[
         {
           required: true,
-          message: 'Please input your nickname!',
+          message: '请输入你的考试名!',
           whitespace: true,
         },
       ]}
@@ -181,59 +159,69 @@ function First() {
     
 
     <Form.Item
-      name="gender"
+      name="subjects"
       label="科目分类"
       rules={[
         {
           required: true,
-          message: 'Please select gender!',
+          message: '请选择你的考试科目!',
         },
       ]}
     >
-      <Select placeholder="select your gender">
-        <Option value="male">Male</Option>
-        <Option value="female">Female</Option>
-        <Option value="other">Other</Option>
+      <Select placeholder="请选择你的考试科目">
+      {First.map((subject, index) => (
+        <Option key={index} value={subject.name}>
+          {subject.name}
+        </Option>
+      ))}
       </Select>
     </Form.Item>
 
     <Form.Item
-      name="gender"
+      name="invigilation"
       label="监考人"
       rules={[
         {
           required: true,
-          message: 'Please select gender!',
+          message: '请选择你的监考人!',
         },
       ]}
     >
-      <Select placeholder="select your gender">
-        <Option value="male">Male</Option>
-        <Option value="female">Female</Option>
-        <Option value="other">Other</Option>
+      <Select placeholder="请选择你的监考人">
+      {First.map((subject, index) => (
+        <Option key={index} value={subject.creator
+        }>
+          {subject.creator
+}
+        </Option>
+      ))}
       </Select>
     </Form.Item>
 
 
     <Form.Item
-      name="gender"
+      name="class"
       label="考试班级"
       rules={[
         {
           required: true,
-          message: 'Please select gender!',
+          message: '请选择你的考试班级!',
         },
       ]}
     >
-      <Select placeholder="select your gender">
-        <Option value="male">Male</Option>
-        <Option value="female">Female</Option>
-        <Option value="other">Other</Option>
+      <Select placeholder="请选择你的考试班级">
+      {First.map((subject, index) => (
+        <Option key={index} value={subject.value
+        }>
+          {subject.value
+}
+        </Option>
+      ))}
       </Select>
     </Form.Item>
 
 
-    <Form.Item label="验证码" extra="We must make sure that your are a human.">
+    <Form.Item label="验证码" extra="我们必须确保你是人类.">
       <Row gutter={8}>
         <Col span={12}>
           <Form.Item
@@ -242,7 +230,7 @@ function First() {
             rules={[
               {
                 required: true,
-                message: 'Please input the captcha you got!',
+                message: '请输入您的验证码!',
               },
             ]}
           >
@@ -261,18 +249,18 @@ function First() {
       rules={[
         {
           validator: (_, value) =>
-            value ? Promise.resolve() : Promise.reject(new Error('Should accept agreement')),
+            value ? Promise.resolve() : Promise.reject(new Error('请确认同意协议')),
         },
       ]}
       {...tailFormItemLayout}
     >
       <Checkbox>
-        I have read the <a href="">agreement</a>
+        请阅读<a href="">同意协议</a>
       </Checkbox>
     </Form.Item>
     <Form.Item {...tailFormItemLayout}>
       <Button type="primary" htmlType="submit">
-        Register
+        确认创建考试
       </Button>
     </Form.Item>
   </Form>

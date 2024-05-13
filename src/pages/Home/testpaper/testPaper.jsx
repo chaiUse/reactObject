@@ -5,9 +5,9 @@
 import React, { useEffect, useState } from 'react';
 import style from "./testPaper.module.scss";
 import instance from '../../../api/api'
+import { posTrevomApi, posTupApi } from '../../../api/testpaper/testpaper'
 
-
-import { Table, Button, Drawer, Modal, Space ,Select  } from 'antd';
+import { Table, Button, Drawer, Modal, Space, Select ,  Form, Input} from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 
@@ -16,18 +16,19 @@ const testPaper = () => {
   const [list, setList] = useState([]); // 初始化 list 状态
   const [ccc, setccc] = useState(null)
   useEffect(() => {
-    
+
 
     fetchTestPapers(); // 调用异步函数
     console.log('调用fetchTestPapers');
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [])
   const fetchTestPapers = async () => {
     try {
       const res = await instance.get("/examination/list");
-      setList(res?.data.list); // 更新状态
 
+      setList(res?.data.list); // 更新状态
+      console.log('更新数据',res);
 
     } catch (error) {
       console.error("Failed to fetch test papers: 请求失败 ", error);
@@ -37,7 +38,7 @@ const testPaper = () => {
   useEffect(() => {
 
     if (list.length > 0) {
-      console.log(list);
+      // console.log(list);
     }
   }, [list]); // 依赖数组中包含 list
 
@@ -128,19 +129,19 @@ const testPaper = () => {
         // console.log(b.questionsList[0]);
         return <div>
           <Button type="primary"
-          
+
             onClick={() => {
               showDrawer()
-              console.log('b',b.questionsList);
+              console.log('b', b.questionsList);
               setccc(b.questionsList)
-              
+
             }}>
             查看考试内容
           </Button>
         </div>
       }
     },
-   
+
     {
       title: '删除',
       dataIndex: 'rem',
@@ -150,12 +151,24 @@ const testPaper = () => {
       },
       render: (a, b) => {
 
-        return <div><Removes/></div>
+        return <div><Removes record={b} /></div>
       }
     },
+    {
+      title: '修改',
+      dataIndex: 'up',
+      sorter: {
+        compare: (a, b) => a.english - b.english,
+        multiple: 10,
+      },
+      render: (a, b) => {
 
+        return <div><Updata record={b} /></div>
+      }
+    },
   ];
-  // eslint-disable-next-line no-undef
+
+  // 渲染数据
   const data = list.map((item, index) => {
 
     const formcreateTime = formatTimestamp(item.createTime);
@@ -174,7 +187,7 @@ const testPaper = () => {
       formstartTime,
       status,
       examiner: item.examiner,
-      
+
     };
   });
 
@@ -182,7 +195,7 @@ const testPaper = () => {
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
-
+  //日期转换
   function formatTimestamp(timestamp) {
     // 将时间戳转换为日期对象
     const date = new Date(timestamp);
@@ -201,57 +214,129 @@ const testPaper = () => {
     return formattedDateTime;
   }
 
-  const LocalizedModal = () => {
-    const [open, setOpen] = useState(false);
-    const showModal = () => {
-      setOpen(true);
+  //  修改数据
+  const Updata = ({ record }) => {
+    const [modal, contextHolder] = Modal.useModal();
+    const [form] = Form.useForm();
+    const handleConfirm = () => {
+      form.validateFields()
+        .then((values) => {
+          // 这里可以调用 API 更新数据
+          // console.log('点接口修改', record);
+          // console.log('点接口修改后的值', values);
+          posTupApi(values)
+          fetchTestPapers()
+          // 更新成功后，可以手动关闭模态框
+          form.resetFields();
+      
+        })
+        .catch((info) => {
+          console.log('Validate Failed:', info);
+        });
     };
-    const hideModal = (key) => {
-      console.log('确认要修改的',key);
-      setOpen(false);
+  
+    const handleCancel = () => {
+      form.resetFields();
+      
     };
+  
     return (
       <>
-        <Button type="primary" onClick={showModal}>
-          修改内容
-        </Button>
-        <Modal
-          title="Modal"
-          open={open}
-          onOk={hideModal}
-          onCancel={hideModal}
-          okText="确认"
-          cancelText="取消"
+        <Button type="primary" onClick={() => modal.confirm({ 
+          title: '修改考试内容',
+          icon: <ExclamationCircleOutlined />,
+          content: (
+            <Form form={form} layout="vertical">
+              <Form.Item
+                name="name"
+                label="修改考试名字"
+                rules={[{ required: true, message: '请输入要修改的内容' }]}
+                initialValue={record.name}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="classify"
+                label="修改科目"
+                rules={[{ required: true, message: '请输入要修改的内容' }]}
+                initialValue={record.classify}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="examiner"
+                label="修改监考人"
+                rules={[{ required: true, message: '请输入要修改的内容' }]}
+                initialValue={record.examiner}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="creator"
+                label="修改创建人"
+                rules={[{ required: true, message: '请输入要修改的内容' }]}
+                initialValue={record.creator}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="createTime"
+                label="修改创建时间"
+                rules={[{ required: true, message: '请输入要修改的内容' }]}
+                initialValue={record.createTime}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="_id"
+                label="当前考试项id"
+                // rules={[{ required: true, message: '请输入要修改的内容' }]}
+                initialValue={record._id}
+              >
+                <span>{record._id}</span>
+              </Form.Item>
+              {/* 这里可以添加更多的表单项 */}
+            </Form>
+          ),
+          okText: '更新',
+          cancelText: '取消',
+          onOk: handleConfirm,
+          onCancel: handleCancel,
+        })}
         >
-          <p>Bla bla ...</p>
-          <p>Bla bla ...</p>
-          <p>Bla bla ...</p>
-        </Modal>
+          修改数据
+        </Button>
+        {contextHolder}
       </>
     );
   };
 
-
-  const Removes = () => {
+  //删除框
+  const Removes = ({ record }) => {
     const [modal, contextHolder] = Modal.useModal();
-    const confirm = () => {
+    const confirm = (item) => {
       modal.confirm({
         title: 'Confirm',
         icon: <ExclamationCircleOutlined />,
         content: 'Bla bla ...',
         okText: '确认',
         cancelText: '取消',
-        onOk: (key) => {
+        onOk: () => {
+          posTrevomApi(item._id)
+          fetchTestPapers()
           // 在这里处理确认事件，例如调用 API 删除数据
-          console.log('点接口删除',key);
+          // console.log('点接口删除',item._id);
         },
       });
+    };
+    // 删除按钮的点击事件处理器
+    const handleDeleteClick = () => {
+      confirm(record); // 调用 confirm 函数并传递当前项 record
     };
     return (
       <>
         <Space>
-          <LocalizedModal />
-          <Button onClick={confirm}>删除</Button>
+          <Button onClick={handleDeleteClick}>删除</Button>
         </Space>
         {contextHolder}
       </>
@@ -270,33 +355,33 @@ const testPaper = () => {
     }
     setList(opts); // 确保使用正确的状态setter
   }, []); // 空依赖数组确保仅在组件挂载时运行
-  
+
   // 处理输入变化的函数
   const handleChange = async (value) => { // 标记为async，因为内部使用了await
     console.log('value', value);
     const values = Array.isArray(value) ? value : [value]; // 确保 values 是数组
-  
+
     // 清空过滤条件，重新获取所有选项
     if (values.length === 0 || value === '') {
-     return fetchTestPapers()
-    }else{
-       // 过滤出包含输入值的选项
-    const updatedFilteredOptions = list.filter(item =>
-      values.some(val =>
-        val && typeof val === 'string' && // 确保 val 是字符串
-        (item.name.toLowerCase().includes(val.toLowerCase()))
-      )
-    );
-  
-    // 更新过滤后的状态
-    // setFilteredOptions(updatedFilteredOptions);
-    setList(updatedFilteredOptions)
-    // 打印过滤后的选项
-    console.log('filteredOptions',filteredOptions );
-    console.log('updatedFilteredOptions',updatedFilteredOptions );
+      return fetchTestPapers()
+    } else {
+      // 过滤出包含输入值的选项
+      const updatedFilteredOptions = list.filter(item =>
+        values.some(val =>
+          val && typeof val === 'string' && // 确保 val 是字符串
+          (item.name.toLowerCase().includes(val.toLowerCase()))
+        )
+      );
+
+      // 更新过滤后的状态
+      // setFilteredOptions(updatedFilteredOptions);
+      setList(updatedFilteredOptions)
+      // 打印过滤后的选项
+      // console.log('filteredOptions',filteredOptions );
+      // console.log('updatedFilteredOptions',updatedFilteredOptions );
     }
-  
-   
+
+
   };
   return (
     <div className={style.box}>
@@ -317,9 +402,9 @@ const testPaper = () => {
       <Drawer title="考试题目" onClose={onClose} open={open} >
         {JSON.stringify(ccc)}
       </Drawer>
-   
+
     </div>
   )
-}
 
+}
 export default testPaper
