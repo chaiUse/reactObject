@@ -33,7 +33,7 @@ const TestContent = () => {
   //调用删除科目接口
   const getDeleteTest = async(id)=>{
     const red = await getDeleteTestApi(id)
-    console.log(red);
+    console.log(red, id);
   }
   
   useEffect(()=>{
@@ -46,6 +46,7 @@ const TestContent = () => {
     {
       title: '学科名称',
       dataIndex: 'name',
+      tooltip: '不可以重复科目',
       width: '15%',
       formItemProps: () => {
         return {
@@ -124,14 +125,14 @@ const TestContent = () => {
           type: 'multiple',
           editableKeys,
           onSave: async (rowKey, data, row) => {
-            console.log(rowKey, data, row);
+            console.log(rowKey, data.name, row, editableKeys);
             if(data._id.length < 8){
               getCreateClass(data.name, data.value)
+              getTestList()
             }else{
               getCreateTest(data._id, data.name, data.value)
             await waitTime(1000);
             }
-            
           },
           onDelete: async () => {
             await getDeleteTest(editableKeys)

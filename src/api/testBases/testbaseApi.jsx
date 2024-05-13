@@ -11,22 +11,20 @@ export const getTestListApi = (page = 1, pageSize = 10) => {
 }
 
 //题库列表
-export const getTiKuListApi = (page = 1, pageSize = 2) => {
+export const getTiKuListApi = ({question=null, classify, type}) => {
   return instance.get('/question/list',{
-    data:{
-      page,
-      pageSize,
+    params:{
+      question,
+      classify,
+      type
     }
   })
 }
 
 //搜索试题
 export const getSearchQuestionApi = () =>{
-  return instance.get('/question/type/list'),{
-    
-  }  
+  return instance.get('/question/type/list')
 }
-
 
 //编辑试题
 export const getEditTestApi = (id, question, type, classify) => {
@@ -77,6 +75,14 @@ export const getCreateTestApi = (id, name, value) => {
 export const getDeleteTestApi = (id) => {
   return instance.post('/classify/remove',{
     id,
+  })
+}
+
+//搜索科目
+export const getClassifyListApi = (page, pageSize) => {
+  return instance.get('/classify/list',{
+    page,
+    pageSize
   })
 }
 
