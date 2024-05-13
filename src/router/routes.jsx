@@ -2,7 +2,7 @@ import Home from "../pages/Home/Home";
 import RoleManagement from "../pages/Home/chai/RoleManagement/roleManagement";
 import Login from "../pages/Login/Login";
 import Room from "../pages/Home/Room/Room";
-import Students from "../pages/Home/Room/Students";
+import Students from "../pages/Home/roomStudents/Students";
 import PermissionMenu from "../pages/PermissionMenu/PermissionMenu";
 import ManagePage from "../pages/userManage/managePage/managePage";
 import Personal from "../pages/userManage/personal/personal";
@@ -38,7 +38,7 @@ const routeConfige = [
       { path: "/home/userManage/personal", element: <Personal /> },
 
       { path: "/home/manage-group/group-list", element: <Room /> },
-      { path: "/home/students", element: <Students /> },
+      { path: "/home/manage-group/group-students", element: <Students /> },
       { path: "/home/question/create-subject", element: <TestContent/> },
       { path: "/home/question/item-bank", element: <TestKu/> },
       { path: "/home/question/create-item", element: <TestNew/> },
