@@ -12,7 +12,6 @@ export const getListApi = () => {
 
 //查询用户列表
 export const getUserListApi = (page, pagesize, search = {}) => {
-  console.log(search);
   return instance.get("/user/list", {
     data: {
       page,
@@ -35,6 +34,41 @@ export const addUserApi = (data) => {
     ...data,
   });
 };
+
+
+
+// //创建考试
+// export const addSecondApi = () => {
+//   console.log('调用了创建考试接口');
+//   return instance.post("/examination/create", 
+//     {
+//     name: "html考试",
+//     classify: "html",
+//     examId:  "64425a108784673370bb54aa",
+//     group: "6440943b4334531055509a51",
+//     examiner: "1111111",
+//     startTime: "2222",
+//     endTime: "33333333"
+//     }
+//   );
+// };
+//创建考试
+export const addSecondApi = () => {
+  console.log('调用了创建考试接口');
+  return instance.post("/examination/create", 
+    {
+    name: "html考试",
+    classify: "html",
+    examId:  "64425a108784673370bb54aa",
+    group: "6440943b4334531055509a51",
+    examiner: "1111111",
+    startTime: "2222",
+    endTime: "33333333"
+    }
+  );
+};
+
+
 
 //编辑用户
 export const UpdataApi = (id, data) => {

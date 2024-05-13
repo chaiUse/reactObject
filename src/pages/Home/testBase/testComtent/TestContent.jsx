@@ -1,6 +1,6 @@
 import style from './testContent.module.scss'
 import { useEffect, useState } from 'react';
-import { getTestListApi } from '../../../../api/testBases/testbaseApi';
+import { getTestListApi, getCreateTestApi, getDeleteTestApi, getCreateClassApi } from '../../../../api/testBases/testbaseApi';
 import { EditableProTable, ProFormRadio } from '@ant-design/pro-components';
 
 const TestContent = () => {
@@ -20,19 +20,47 @@ const TestContent = () => {
     const ret = await getTestListApi()
     setDataSource(ret.data.list);
   }
+  //调用创建科目接口
+  const getCreateClass = async(name, value)=>{
+    const ref = await getCreateClassApi(name, value)
+    console.log(ref);
+  }
+  //调用编辑科目接口
+  const getCreateTest = async(id, name, value)=>{
+    const rec = await getCreateTestApi(id, name, value)
+    console.log(rec);
+  }
+  //调用删除科目接口
+  const getDeleteTest = async(id)=>{
+    const red = await getDeleteTestApi(id)
+    console.log(red);
+  }
   
   useEffect(()=>{
     getTestList()
+    getCreateTest()
+    getDeleteTest()
+    getCreateClass()
   },[])
   const columns = [
     {
       title: '学科名称',
       dataIndex: 'name',
       width: '15%',
+      formItemProps: () => {
+        return {
+          rules: [{ required: true, message: '此项为必填项' }],
+        };
+      },
     },
     {
       title: '学科内容',
       dataIndex: 'value',
+      formItemProps: () => {
+        return {
+          rules: [{ required: true, message: '此项为必填项' }],
+        };
+      },
     },
     {
       title: '操作',
@@ -56,7 +84,7 @@ const TestContent = () => {
       <EditableProTable
         rowKey="_id"
         headerTitle="学科创建表"
-        maxLength={5}
+        maxLength={300}
         scroll={{
           x: 960,
         }}
@@ -68,7 +96,7 @@ const TestContent = () => {
         loading={false}
         toolBarRender={() => [
           <ProFormRadio.Group
-            key="render"
+            key ="render"
             fieldProps={{
               value: position,
               onChange: (e) => setPosition(e.target.value),
@@ -97,7 +125,15 @@ const TestContent = () => {
           editableKeys,
           onSave: async (rowKey, data, row) => {
             console.log(rowKey, data, row);
-            await waitTime(2000);
+            if(data._id.length < 8){
+              getCreateClass(data.name, data.value)
+            }else{
+              getCreateTest(data._id, data.name, data.value)
+            await waitTime(1000);
+            }
+          },
+          onDelete: async () => {
+            await getDeleteTest(editableKeys)
           },
           onChange: setEditableRowKeys,
         }}

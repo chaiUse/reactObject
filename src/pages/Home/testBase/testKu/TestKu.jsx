@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import style from './testKu.module.scss'
-import { Form, Input, Popconfirm, Table, Typography } from 'antd';
-// import { Navigate } from 'react-router';
-import { getTiKuListApi } from '../../../../api/testBases/testbaseApi';
+import { Form, Input, Popconfirm, Table, Typography, Space, Select } from 'antd';
+import { Link } from 'react-router-dom';
+import { getTiKuListApi, getEditTestApi, getDelTestApi, getSearchQuestionApi } from '../../../../api/testBases/testbaseApi';
 import TestRight from '../testRight/TestRight';
 
 const TestKu = () => {
@@ -17,7 +17,7 @@ const TestKu = () => {
     const currentTime = `${year}/${month}/${day}/${hours}:${minutes}`;
     return currentTime
   }
-  //所有数据
+  //试题列表
   const [data, setData] = useState([]);
   const getTiKu = async() =>{
     const res = await getTiKuListApi()
@@ -26,14 +26,34 @@ const TestKu = () => {
     })
     setData(res.data.list)
   }
+  //编辑试题
+  const getEditTest = async(id, question, type, classify) => {
+    const ree = await getEditTestApi(id, question, type, classify)
+    // console.log(ree);
+  }
+  //删除试题
+  const getDelTest = async(id) => {
+    const red = await getDelTestApi(id)
+    // console.log(red);
+  }
+  //搜索试题
+  const getSearchQuestion = async() => {
+    const reu = await getSearchQuestionApi()
+    console.log(reu)
+  }
+
   useEffect(() => {
     getTiKu()
+    getEditTest()
+    getDelTest()
+    getSearchQuestion()
   },[])
   console.log(data);
   
   //点击删除
   const handleDelete = (_id) => {
     const newData = data.filter((item) => item._id !== _id);
+    getDelTest(_id)
     setData(newData);
     setEditingKey('');
   };
@@ -70,6 +90,12 @@ const TestKu = () => {
     );
   };
 
+  //搜索筛选
+  const { Search } = Input;
+  const onSearch = (value, _e, info) => console.log(info?.source, value);
+  
+  
+  //编辑
   const [form] = Form.useForm();
   const [editingKey, setEditingKey] = useState('');
   const isEditing = (record) => record._id === editingKey;
@@ -90,6 +116,7 @@ const TestKu = () => {
   };
   const save = async (_id) => {
     try {
+      console.log(_id);
       const row = await form.validateFields();
       const newData = [...data];
       const index = newData.findIndex((item) => _id === item._id);
@@ -100,9 +127,11 @@ const TestKu = () => {
           ...row,
         });
         setData(newData);
+        getEditTest(_id, newData[index].question, newData[index].type, newData[index].classify)
         setEditingKey('');
       } else {
         newData.push(row);
+        console.log(newData);
         setData(newData);
         setEditingKey('');
       }
@@ -121,13 +150,33 @@ const TestKu = () => {
     {
       title: '分类',
       dataIndex: 'type',
-      width: '12%',
+      width: '15%',
       editable: true,
+      render: (text, record) => {
+        let typeLabel = '';
+        switch (record.type) {
+          case '1':
+            typeLabel = '单选题';
+            break;
+          case '2':
+            typeLabel = '多选题';
+            break;
+          case '3':
+            typeLabel = '填空题';
+            break;
+          case '4':
+            typeLabel = '判断题';
+            break;
+          default:
+            typeLabel = '未知题型';
+        }
+        return typeLabel;
+      }
     },
     {
       title: '题型',
       dataIndex: 'classify',
-      width: '12%',
+      width: '15%',
       editable: true,
     },
       {
@@ -195,9 +244,59 @@ const TestKu = () => {
   });
   return (
     <div className={style.testKu}>
-      <button>添加试题</button>
-      <div className='testSearch'>
-        试题搜索
+      <button 
+        style={{
+          width:'100px', height: '30px', background: '#409aff', border: 0 
+        }}>
+        <Link to='/home/question/create-item' style={{color:'#ffffff'}}>添加试题</Link>
+      </button>
+      <div className='testSearch' style={{marginTop:'30px', display:'flex', justifyContent:'space-around'}}>
+          <Form.Item
+            label="试题搜索"
+            name="testSearch"
+          >
+            <Search
+              placeholder="请输入题干搜索"
+              allowClear
+              enterButton="搜索"
+              size="middle"
+              onSearch={onSearch}
+            />
+          </Form.Item>  
+          <Form.Item
+            label="试题分类"
+            name="testType"
+          >
+            <Select 
+              placeholder="请选择"
+              style={{
+                width: 120,
+              }} 
+              options={[
+                {
+                  value: 'jack',
+                  label: 'Jack',
+                }
+              ]}
+            />
+          </Form.Item>
+          <Form.Item
+            label="题目类型"
+            name="titleType"
+          >
+            <Select 
+              placeholder="请选择题型"
+              style={{
+                width: 120,
+              }}
+              options={[
+                {
+                  value: 'jack',
+                  label: 'Jack',
+                }
+              ]}
+            />
+          </Form.Item>
       </div>
       <Form form={form} component={false}>
         <Table

@@ -14,10 +14,10 @@ export const queryRoleApi = (page = "1", pagesize = "5") => {
 };
 
 //创建角色
-export const createRole = (value = { name: '管理员', value: 'ssss' }) => {
-  console.log(value);
-  return instance.post('/role/create', {
-    ...value
+export const createRole = (value={name:'管理员',value:'ssss'})=>{
+  // console.log(value);
+  return instance.post('/role/create',{
+      ...value
   })
 }
 //删除角色

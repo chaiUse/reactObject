@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Row, Select, Space, theme } from 'antd';
+import { roomSearchApi } from '../../../../api/classroom/classroom'
+import { useContext } from 'react';
+import { DataContext } from '../data/DataContext';
 
-const RoomTitle = () => {
+const RoomTitle = (props) => {
+  const { data, setData } = useContext(DataContext);
   const { Option } = Select;
   const AdvancedSearchForm = () => {
   const { token } = theme.useToken();
@@ -23,11 +27,11 @@ const RoomTitle = () => {
         <Col span={8} key={i}>
           {i === 0 ? (
             <Form.Item
-              name='班级名称'
+              name='name'
               label='班级名称'
               rules={[
                 {
-                  required: true,
+                  // required: true,
                   message: '请输入',
                 },
               ]}
@@ -36,11 +40,11 @@ const RoomTitle = () => {
             </Form.Item>
           ) : (
             <Form.Item
-              name={i===1?'老师':'科目类别'}
-              label={i===1?'老师':'科目类别'}
+              name={i===1?'teacher':'classify'}
+              label={i===1?'teacher':'classify'}
               rules={[
                 {
-                  required: true,
+                  // required: true,
                   message: '请选择',
                 },
               ]}
@@ -50,13 +54,13 @@ const RoomTitle = () => {
                showSearch={i === 1}// 启用搜索功能
             //    filterOption={false} // 允许输入非选项中的值
                placeholder={i===1?"请选择或输入":'请选择'}>
-              {i === 1 && <Option value="1">选择1</Option>}
-              {i === 1 && <Option value="2">选择2</Option>}
-              {i === 1 && <Option value="3">选择3</Option>}
+             {props.teacherList1.map(item=>(
+             i === 1 && <Option value={item} key={item}>{item}</Option>
+          ))}
               {/* 第二个 Select 的选项 */}
-              {i === 2 && <Option value="A">选项 A</Option>}
-              {i === 2 && <Option value="B">选项 B</Option>}
-              {i === 2 && <Option value="C">选项 C</Option>}
+              {props.classList1.map(item=>(
+             i === 2 && <Option value={item} key={item}>{item}</Option>
+          ))}
             </Select>
             </Form.Item>
             
@@ -66,8 +70,17 @@ const RoomTitle = () => {
     }
     return children;
   };
-  const onFinish = (values) => {
+  const onFinish = async(values) => {
     console.log('Received values of form: ', values);
+    const resSearch = await roomSearchApi(values.name,values.teacher,values.classify)
+    if(resSearch.code === 200){
+      resSearch.data.list.map((item,index)=>{
+        item.num = index+1,
+        item.key = index
+      })
+      setData(resSearch.data.list)
+    }
+
   };
   return (
     <Form form={form} name="advanced_search" style={formStyle} onFinish={onFinish}>
