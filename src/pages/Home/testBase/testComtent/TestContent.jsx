@@ -131,7 +131,6 @@ const TestContent = () => {
               getCreateTest(data._id, data.name, data.value)
             await waitTime(1000);
             }
-            
           },
           onDelete: async () => {
             await getDeleteTest(editableKeys)
