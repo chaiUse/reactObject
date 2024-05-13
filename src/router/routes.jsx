@@ -11,7 +11,7 @@ import TestKu from "../pages/Home/testBase/testKu/TestKu";
 import TestNew from "../pages/Home/testBase/testNew/TestNew";
 import { lazy } from "react";
 import Homecon from "../pages/Home/chai/home/home";
-
+import Bank from "../pages/Home/chai/paper/bank";
 const TestDetail = lazy(() => import("../pages/Home/studentSystem/testDetail"));
 const TestList = lazy(() => import("../pages/Home/studentSystem/testList"));
 const OverTest = lazy(() => import("../pages/Home/studentSystem/overTest"));
@@ -41,6 +41,7 @@ const routeConfige = [
       { path: "/home/question/item-bank", element: <TestKu/> },
       { path: "/home/question/create-item", element: <TestNew/> },
       { path: "/home/userManage/menuManage", element: <PermissionMenu /> },
+      { path: "/home/paper/paper-bank", element: <Bank /> },
     ],
   },
 ];

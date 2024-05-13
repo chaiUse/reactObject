@@ -11,11 +11,12 @@ $up_height: 100px;
   height: $up_height;
   display: flex;
   justify-content: space-between;
-  // padding: 0 30px;
+  // justify-content: center;
+  padding:  30px;
   // background: #000;
   background-image: url(http://p1.music.126.net/o3m413wu0IE6MMDHaPBbUA==/109951166102809451.jpg?param=130y130);
   background-repeat: no-repeat;
-  background-size: 100% 200%;
+  background-size: 103% 200%;
   color: #fff;
 }
 .box {
@@ -57,7 +58,7 @@ img{
   height: 100%;
   // width: 40%;
   overflow: auto;
-  padding: 0 0 200px;
+  // padding: 0 0 200px;
 }
 /* 媒体查询 */
 @media screen and (max-width: 1200px) {

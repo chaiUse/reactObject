@@ -73,7 +73,7 @@ const Home = () => {
             }}
             className={style.showIco}
           >
-            <UnorderedListOutlined />
+            <UnorderedListOutlined style={{fontSize:'30px',background:'rgba(184, 121, 155,1)'}}/>
           </div>
         </div>
 
