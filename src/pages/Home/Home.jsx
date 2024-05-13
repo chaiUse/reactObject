@@ -1,6 +1,6 @@
 // import React from 'react'
 import style from "./Home.module.scss";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import List from "../../components/list";
 import { useEffect, useState } from "react";
 import RightUp from "../../components/rightUp/rightUp";
@@ -12,6 +12,8 @@ import { UnorderedListOutlined, UserOutlined } from "@ant-design/icons";
 import { getUserInfoApi, getListApi } from "../../api/user/user";
 
 const Home = () => {
+  const navigator = useNavigate();
+
   const [flage, setFlage] = useState(false);
 
   //用户信息
@@ -46,9 +48,14 @@ const Home = () => {
     {
       key: "2",
       label: (
-        <a target="_blank" rel="noopener noreferrer">
+        <p
+          onClick={() => {
+            localStorage.removeItem("token");
+            navigator("/");
+          }}
+        >
           退出登录
-        </a>
+        </p>
       ),
     },
   ];
@@ -99,8 +106,7 @@ const Home = () => {
         <div className={style.right}>
           <RightUp />
           <div className={style.conten}>
-            
-          <Outlet />
+            <Outlet />
           </div>
         </div>
       </div>
