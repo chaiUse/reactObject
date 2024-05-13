@@ -39,3 +39,33 @@ export const roomDelApi = (id)=>{
     id
   })
 }
+
+
+
+// 查询学生
+export const stuSearchApi = (username)=>{
+  return instance.get('/student/list',{
+    params:{
+      username
+    }
+  })
+}
+
+
+// 编辑学生
+export const stuEditApi = (username,id,sex,age,className)=>{
+  return instance.post('/student/update',{
+    username,
+    id,
+    sex,
+    age,
+    className
+  })
+}
+
+// 删除学生
+export const stuDelApi = (id)=>{
+  return instance.post('/student/remove',{
+    id
+  })
+}
