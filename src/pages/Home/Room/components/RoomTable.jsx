@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Form, Input,Select, Popconfirm, Table, Typography } from 'antd';
-import {roomSearchApi} from '../../../../api/classroom/classroom'
+import {roomSearchApi,roomEditApi,roomDelApi} from '../../../../api/classroom/classroom'
+import React, { useContext } from 'react';
+import { DataContext } from '../data/DataContext';
 
 
 const RoomTable = () => {
-
+  const { Option } = Select;
   const EditableCell = ({
     editing,
     dataIndex,
@@ -55,7 +57,7 @@ const RoomTable = () => {
   };
 
   const [form] = Form.useForm();
-  const [data, setData] = useState([]);// 班级列表的状态
+  const { data, setData } = useContext(DataContext)
   // const [data, setData] = useState([]);// 班级列表的状态
   const [editingKey, setEditingKey] = useState('');//编辑状态
   const [ teacherList, setTeacherList ] = useState([])//老师选项
@@ -69,20 +71,15 @@ const RoomTable = () => {
       item.key = index
     })
     setData(res.data.list)
-
+    console.log('bbb',res.data.list)
     // 老师选项
-    const teacherList =  res.data.list.map(item => item.teacher)
-    setTeacherList([...new Set(teacherList)])
-
+    setTeacherList([...new Set(res.data.list.map(item => item.teacher))])
     // 科目类别选项
-    const classList =  res.data.list.map(item => item.classify)
-    setClassList([...new Set(classList)])
-
+    setClassList([...new Set(res.data.list.map(item => item.classify))])
   }
   useEffect(()=>{
     b()
   },[])
-
 
   const isEditing = (record) => record.key === editingKey;
   const edit = (record) => {
@@ -101,33 +98,41 @@ const RoomTable = () => {
   const save = async (key) => {
     try {
       const row = await form.validateFields();
-      const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-        setData(newData);
+      // const newData = [...data];
+      const index = data.findIndex((item) => key === item.key);
+      const resEdit = await roomEditApi(row.name,data[index]._id,row.teacher,row.classify)
+      if(resEdit.code === 200){
+        // if (index > -1) {
+        //   const item = newData[index];
+        //   newData.splice(index, 1, {
+        //     ...item,
+        //     ...row,
+        //   });
+        //   setData(newData);
+        b()
         setEditingKey('');
-
-      } else {
-        newData.push(row);
-        setData(newData);
-        setEditingKey('');
+  
+        // } else {
+        //   newData.push(row);
+        //   setData(newData);
+        //   setEditingKey('');
+        // }
       }
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
     }
   };
-  const handleDelete = (key) => {
+  const handleDelete = async(key) => {
     if (editingKey === key) {
       // 如果是，重置 editingKey
       setEditingKey('');
     }
-    const newData = data.filter((item) => item.key !== key);
-    setData(newData);
+    // const newData = data.filter((item) => item.key !== key);
+    const index = data.findIndex((item) => key === item.key);
+    const resDel = await roomDelApi(data[index]._id)
+    console.log( '111222',resDel)
+    b()
+    // setData(newData);
   };
   const columns = [
     {

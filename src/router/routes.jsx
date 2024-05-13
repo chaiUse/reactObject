@@ -29,7 +29,7 @@ const routeConfige = [
       { path: "/home/userManage/manage-page", element: <ManagePage /> },
       { path: "/home/userManage/personal", element: <Personal /> },
 
-      { path: "/home/room", element: <Room /> },
+      { path: "/home/manage-group/group-list", element: <Room /> },
       { path: "/home/students", element: <Students /> },
       { path: "/home/question/create-subject", element: <TestContent/> },
       { path: "/home/question/item-bank", element: <TestKu/> },

@@ -5,7 +5,7 @@ const token = localStorage.getItem("token");
 // 创建 Axios 实例
 const instance = axios.create({
   baseURL: "/exam_api", // 设置默认的 baseURL
-  timeout: 10000, // 设置超时时间
+  // timeout: 10000, // 设置超时时间
   withCredentials: true,
 });
 

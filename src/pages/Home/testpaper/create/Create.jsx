@@ -1,32 +1,51 @@
-import React, { useState } from 'react';
-import { Button, message, Steps, theme } from 'antd';
+import { useEffect, useState } from 'react';
+import { Button, Steps, theme } from 'antd';
 import First from './First/First'
-import Last from './Last/Last'
+
 import Second from './Second/Second'
+
+import {posTestApi} from '../../../../api/testpaper/testpaper'
+
 
 const steps = [
     {
-      title: 'First',
-      content: <First/>,
-    },
-    {
-      title: 'Second',
-      content: <Second/>,
-    },
-    {
-      title: 'Last',
-      content: <Last/>,
-    },
+        title: 'First',
+    
+        content: First ,
+      },
+      {
+        title: 'Second',
+   
+        content: Second,
+      },
+     
   ];
+
+  
 function Create() {
+    const [stepValues, setStepValues] = useState({});
     const { token } = theme.useToken();
     const [current, setCurrent] = useState(0);
-    const next = () => {
-      setCurrent(current + 1);
+   
+  
+      
+    const next = (data) => {
+        
+    
+       
+        if(data){
+            setStepValues(data);
+            setCurrent(current + 1);
+            posTestApi(data)
+        }
+        
     };
     const prev = () => {
       setCurrent(current - 1);
     };
+
+   
+
     const items = steps.map((item) => ({
       key: item.title,
       title: item.title,
@@ -40,25 +59,19 @@ function Create() {
       border: `1px dashed ${token.colorBorder}`,
       marginTop: 16,
     };
+    // 渲染当前步骤的组件，并传递 next 和 prev 函数作为 props
+  const CurrentContent = steps[current].content;
     return (
       <>
-        <Steps current={current} items={items} />
-        <div style={contentStyle}>{steps[current].content}</div>
+        <Steps current={current} items={items}  />
+        <div style={contentStyle}><CurrentContent next={next} prev={current > 0 ? prev : null}  stepValues={stepValues} /></div>
         <div
           style={{
             marginTop: 24,
           }}
         >
-          {current < steps.length - 1 && (
-            <Button type="primary" onClick={() => next()}>
-              Next
-            </Button>
-          )}
-          {current === steps.length - 1 && (
-            <Button type="primary" onClick={() => message.success('Processing complete!')}>
-              Done
-            </Button>
-          )}
+      
+          
           {current > 0 && (
             <Button
               style={{
@@ -66,7 +79,7 @@ function Create() {
               }}
               onClick={() => prev()}
             >
-              Previous
+              返回上一次操作
             </Button>
           )}
         </div>
