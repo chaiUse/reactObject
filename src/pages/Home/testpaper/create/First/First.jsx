@@ -71,7 +71,7 @@ function First({ next }) {
       const res = await instance.get("/classify/list?page=1&pagesize=2");
       
       setFirst(res?.data.list); // 更新状态
-
+      console.log(First);
     } catch (error) {
       console.error("Failed to fetch test papers: 请求失败 ", error);
     }

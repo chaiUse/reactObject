@@ -37,6 +37,7 @@ function Create() {
             setStepValues(data);
             setCurrent(current + 1);
             posTestApi(data)
+            console.log('Create调用posTestApi创建接口');
         }
         
     };

@@ -1,15 +1,11 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable no-const-assign */
-/* eslint-disable no-unused-vars */
-// eslint-disable-next-line no-unused-vars
+
 import React, { useEffect, useState } from 'react';
 import style from "./testPaper.module.scss";
 import instance from '../../../api/api'
 import { posTrevomApi, posTupApi } from '../../../api/testpaper/testpaper'
-
-import { Table, Button, Drawer, Modal, Space, Select ,  Form, Input} from 'antd';
+import dayjs from 'dayjs';
+import { Table, Button, Drawer, Modal, Space, Select ,  Form, Input ,DatePicker } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-
 
 
 const testPaper = () => {
@@ -27,21 +23,15 @@ const testPaper = () => {
     try {
       const res = await instance.get("/examination/list");
 
-      setList(res?.data.list); // 更新状态
-      console.log('更新数据',res);
+      setList(res.data.list); // 更新状态
+      // console.log('更新数据',res);
 
     } catch (error) {
       console.error("Failed to fetch test papers: 请求失败 ", error);
     }
   };
 
-  useEffect(() => {
-
-    if (list.length > 0) {
-      // console.log(list);
-    }
-  }, [list]); // 依赖数组中包含 list
-
+ 
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
     setOpen(true);
@@ -57,18 +47,18 @@ const testPaper = () => {
     {
       title: '科目分类',
       dataIndex: 'chinese',
-      sorter: {
-        compare: (a, b) => a.chinese - b.chinese,
-        multiple: 3,
-      },
+      // sorter: {
+      //   compare: (a, b) => a.chinese - b.chinese,
+      //   multiple: 3,
+      // },
     },
     {
       title: '创建者',
       dataIndex: 'math',
-      sorter: {
-        compare: (a, b) => a.math - b.math,
-        multiple: 2,
-      },
+      // sorter: {
+      //   compare: (a, b) => a.math - b.math,
+      //   multiple: 2,
+      // },
     },
     {
       title: '创建时间',
@@ -81,26 +71,26 @@ const testPaper = () => {
     {
       title: '状态',
       dataIndex: 'status',
-      sorter: {
-        compare: (a, b) => a.english - b.english,
-        multiple: 4,
-      },
+      // sorter: {
+      //   compare: (a, b) => a.english - b.english,
+      //   multiple: 4,
+      // },
     },
     {
       title: '监考人',
       dataIndex: 'examiner',
-      sorter: {
-        compare: (a, b) => a.english - b.english,
-        multiple: 5,
-      },
+      // sorter: {
+      //   compare: (a, b) => a.english - b.english,
+      //   multiple: 5,
+      // },
     },
     {
       title: '考试班级',
       dataIndex: '考试班级',
-      sorter: {
-        compare: (a, b) => a.english - b.english,
-        multiple: 6,
-      },
+      // sorter: {
+      //   compare: (a, b) => a.english - b.english,
+      //   multiple: 6,
+      // },
     },
     {
       title: '开始时间',
@@ -121,10 +111,10 @@ const testPaper = () => {
     {
       title: '设置',
       dataIndex: 'style',
-      sorter: {
-        compare: (a, b) => a.english - b.english,
-        multiple: 9,
-      },
+      // sorter: {
+      //   compare: (a, b) => a.english - b.english,
+      //   multiple: 9,
+      // },
       render: (a, b) => {
         // console.log(b.questionsList[0]);
         return <div>
@@ -145,10 +135,10 @@ const testPaper = () => {
     {
       title: '删除',
       dataIndex: 'rem',
-      sorter: {
-        compare: (a, b) => a.english - b.english,
-        multiple: 10,
-      },
+      // sorter: {
+      //   compare: (a, b) => a.english - b.english,
+      //   multiple: 10,
+      // },
       render: (a, b) => {
 
         return <div><Removes record={b} /></div>
@@ -157,12 +147,12 @@ const testPaper = () => {
     {
       title: '修改',
       dataIndex: 'up',
-      sorter: {
-        compare: (a, b) => a.english - b.english,
-        multiple: 10,
-      },
+      // sorter: {
+      //   compare: (a, b) => a.english - b.english,
+      //   multiple: 10,
+      // },
       render: (a, b) => {
-
+        // console.log('这个B',b);
         return <div><Updata record={b} /></div>
       }
     },
@@ -170,7 +160,6 @@ const testPaper = () => {
 
   // 渲染数据
   const data = list.map((item, index) => {
-
     const formcreateTime = formatTimestamp(item.createTime);
     const formendTime = formatTimestamp(item.endTime);
     const formstartTime = formatTimestamp(item.startTime);
@@ -221,10 +210,18 @@ const testPaper = () => {
     const handleConfirm = () => {
       form.validateFields()
         .then((values) => {
-          // 这里可以调用 API 更新数据
-          // console.log('点接口修改', record);
+          // console.log('values.createTime before parsing:创建时间', values.createTime);
+           // 假设values.createTime是一个日期时间字符串 
+          const createTimeString = values.createTime;
+          // 使用Date.parse()将日期时间字符串转换为时间戳
+          const createTimeTimestamp = Date.parse(createTimeString);
+
+          // console.log(values.createTime); // 显示原始的日期时间字符串
+          // console.log('转换后的时间戳:', createTimeTimestamp);
+          // console.log(values.createTime)
+          // console.log('点接口修改前', record);
           // console.log('点接口修改后的值', values);
-          posTupApi(values)
+          posTupApi({ ...values, createTime: createTimeTimestamp })
           fetchTestPapers()
           // 更新成功后，可以手动关闭模态框
           form.resetFields();
@@ -239,7 +236,12 @@ const testPaper = () => {
       form.resetFields();
       
     };
-  
+    const onChange = (date, dateString) => {
+      console.log(date, dateString);
+    };
+    
+    
+    const dateFormat = 'YYYY-MM-DD';
     return (
       <>
         <Button type="primary" onClick={() => modal.confirm({ 
@@ -279,14 +281,19 @@ const testPaper = () => {
               >
                 <Input />
               </Form.Item>
-              <Form.Item
+              
+              <Form.Item name="createTime" label="修改创建时间" >
+                <DatePicker showTime needConfirm="年/月/日 时:分"  defaultValue={dayjs(record.createTime)} />
+                
+              </Form.Item>
+              {/* <Form.Item
                 name="createTime"
                 label="修改创建时间"
                 rules={[{ required: true, message: '请输入要修改的内容' }]}
                 initialValue={record.createTime}
               >
-                <Input />
-              </Form.Item>
+               <TimePicker />
+              </Form.Item> */}
               <Form.Item
                 name="_id"
                 label="当前考试项id"

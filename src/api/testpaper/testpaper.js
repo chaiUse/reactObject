@@ -25,6 +25,7 @@ export const posTrevomApi = (id) =>{
 }
 
 export const posTupApi = (data) =>{
+ 
     console.log('修改数据接口',data);
     return instance.post("/examination/update",{
         id:data._id,
