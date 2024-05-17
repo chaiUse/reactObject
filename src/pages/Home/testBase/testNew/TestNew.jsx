@@ -66,15 +66,9 @@ const TestNew = () => {
       className="testNew"
       style={{ height: "100%", overflow: "auto", padding: "0 20px" }}
     >
-      <div className="btns">
-        <button>手动添加</button>
-        <input
-          type="file"
-          ref={fileInputRef}
-          style={{ display: "none" }}
-          onChange={handleFileChange}
-        />
-        <button onClick={add}>批量导入</button>
+      <div className="btns" style={{width: '200px', marginBottom: '10px', display:'flex', justifyContent: 'space-between'}}>
+        <Button type="primary">手动添加</Button>
+        <Button onClick={add} type="primary">批量导入</Button>
       </div>
       <div className="testTitle">
         <Form
@@ -84,7 +78,7 @@ const TestNew = () => {
           autoComplete="off"
         >
           <div style={{ display: "flex" }}>
-            <>
+            <div style={{ display: "flex", marginLeft: '10px'}}>
               <p>题型</p>
               <Form.Item
                 name="testI"
@@ -106,8 +100,8 @@ const TestNew = () => {
                   <Option value="other">填空题</Option>
                 </Select>
               </Form.Item>
-            </>
-            <>
+            </div>
+            <div style={{ display: "flex", marginLeft: '20px' }}>
               <p>分类</p>
               <Form.Item
                 name="classI"
@@ -126,11 +120,11 @@ const TestNew = () => {
                   <Option value="class">科目</Option>
                 </Select>
               </Form.Item>
-            </>
+            </div>
           </div>
           <Form.Item
             label="题目"
-            name="题目"
+            name="title"
             rules={[
               {
                 required: true,
